@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\admin;
+namespace local_visudesk\admin;
 
-use local_coursefiles\local\autoapprove;
+use local_visudesk\local\autoapprove;
 
 /**
  * Setting for a naming scheme of courses: a regular expression with a group named "class".
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,7 +35,7 @@ class setting_namepattern extends \admin_setting_configtext {
     public function validate($data) {
         $data = trim((string)$data);
         if (!autoapprove::valid_pattern($data)) {
-            return get_string('errornamepattern', 'local_coursefiles');
+            return get_string('errornamepattern', 'local_visudesk');
         }
         return true;
     }

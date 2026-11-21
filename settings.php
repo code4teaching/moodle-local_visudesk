@@ -17,7 +17,7 @@
 /**
  * Settings: site role for teachers, automatic approval of course requests.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_coursefiles', get_string('pluginname', 'local_coursefiles'));
+    $settings = new admin_settingpage('local_visudesk', get_string('pluginname', 'local_visudesk'));
     $ADMIN->add('localplugins', $settings);
 
     if ($ADMIN->fulltree) {
@@ -36,65 +36,65 @@ if ($hassiteconfig) {
         $editingteacher = get_archetype_roles('editingteacher');
 
         $settings->add(new admin_setting_heading(
-            'local_coursefiles/teacherroleheading',
-            get_string('teacherroleheading', 'local_coursefiles'),
-            get_string('teacherroleheading_desc', 'local_coursefiles')
+            'local_visudesk/teacherroleheading',
+            get_string('teacherroleheading', 'local_visudesk'),
+            get_string('teacherroleheading_desc', 'local_visudesk')
         ));
         $settings->add(new admin_setting_configselect(
-            'local_coursefiles/teacherrole',
-            get_string('teacherrole', 'local_coursefiles'),
-            get_string('teacherrole_desc', 'local_coursefiles'),
+            'local_visudesk/teacherrole',
+            get_string('teacherrole', 'local_visudesk'),
+            get_string('teacherrole_desc', 'local_visudesk'),
             $editingteacher ? reset($editingteacher)->id : 0,
             $courseroles
         ));
         $siterole = new admin_setting_configselect(
-            'local_coursefiles/siterole',
-            get_string('siterole', 'local_coursefiles'),
-            get_string('siterole_desc', 'local_coursefiles'),
+            'local_visudesk/siterole',
+            get_string('siterole', 'local_visudesk'),
+            get_string('siterole_desc', 'local_visudesk'),
             0,
             $systemroles
         );
-        $siterole->set_updatedcallback([\local_coursefiles\local\teacherrole::class, 'sync']);
+        $siterole->set_updatedcallback([\local_visudesk\local\teacherrole::class, 'sync']);
         $settings->add($siterole);
 
         $settings->add(new admin_setting_heading(
-            'local_coursefiles/autoapproveheading',
-            get_string('autoapproveheading', 'local_coursefiles'),
-            get_string('autoapproveheading_desc', 'local_coursefiles')
+            'local_visudesk/autoapproveheading',
+            get_string('autoapproveheading', 'local_visudesk'),
+            get_string('autoapproveheading_desc', 'local_visudesk')
         ));
         $settings->add(new admin_setting_configcheckbox(
-            'local_coursefiles/autoapprove',
-            get_string('autoapprove', 'local_coursefiles'),
-            get_string('autoapprove_desc', 'local_coursefiles'),
+            'local_visudesk/autoapprove',
+            get_string('autoapprove', 'local_visudesk'),
+            get_string('autoapprove_desc', 'local_visudesk'),
             0
         ));
-        $settings->add(new \local_coursefiles\admin\setting_namepattern(
-            'local_coursefiles/autoapprovefullname',
-            get_string('autoapprovefullname', 'local_coursefiles'),
-            get_string('autoapprovefullname_desc', 'local_coursefiles'),
-            \local_coursefiles\local\autoapprove::FULLNAME,
+        $settings->add(new \local_visudesk\admin\setting_namepattern(
+            'local_visudesk/autoapprovefullname',
+            get_string('autoapprovefullname', 'local_visudesk'),
+            get_string('autoapprovefullname_desc', 'local_visudesk'),
+            \local_visudesk\local\autoapprove::FULLNAME,
             PARAM_RAW,
             80
         ));
-        $settings->add(new \local_coursefiles\admin\setting_namepattern(
-            'local_coursefiles/autoapproveshortname',
-            get_string('autoapproveshortname', 'local_coursefiles'),
-            get_string('autoapproveshortname_desc', 'local_coursefiles'),
-            \local_coursefiles\local\autoapprove::SHORTNAME,
+        $settings->add(new \local_visudesk\admin\setting_namepattern(
+            'local_visudesk/autoapproveshortname',
+            get_string('autoapproveshortname', 'local_visudesk'),
+            get_string('autoapproveshortname_desc', 'local_visudesk'),
+            \local_visudesk\local\autoapprove::SHORTNAME,
             PARAM_RAW,
             80
         ));
         $settings->add(new admin_setting_configtext(
-            'local_coursefiles/autoapprovearchive',
-            get_string('autoapprovearchive', 'local_coursefiles'),
-            get_string('autoapprovearchive_desc', 'local_coursefiles'),
-            \local_coursefiles\local\autoapprove::ARCHIVE,
+            'local_visudesk/autoapprovearchive',
+            get_string('autoapprovearchive', 'local_visudesk'),
+            get_string('autoapprovearchive_desc', 'local_visudesk'),
+            \local_visudesk\local\autoapprove::ARCHIVE,
             PARAM_TEXT
         ));
         $settings->add(new admin_setting_configtext(
-            'local_coursefiles/autoapprovenotify',
-            get_string('autoapprovenotify', 'local_coursefiles'),
-            get_string('autoapprovenotify_desc', 'local_coursefiles'),
+            'local_visudesk/autoapprovenotify',
+            get_string('autoapprovenotify', 'local_visudesk'),
+            get_string('autoapprovenotify_desc', 'local_visudesk'),
             '',
             PARAM_USERNAME
         ));

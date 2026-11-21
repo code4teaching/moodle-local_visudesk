@@ -14,20 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
-use local_coursefiles\local\files;
+use local_visudesk\local\files;
 
 /**
  * Replaces the files of a file resource or a folder, e.g. with a newer version of a worksheet.
  *
  * The activity keeps its ID, place, settings and completion; only the files (and optionally the name) change.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -63,13 +63,13 @@ class update_files extends external_api {
 
         $cm = get_coursemodule_from_id('', $params['cmid'], 0, false, MUST_EXIST);
         if (!in_array($cm->modname, ['resource', 'folder'])) {
-            throw new \moodle_exception('notfilemodule', 'local_coursefiles');
+            throw new \moodle_exception('notfilemodule', 'local_visudesk');
         }
         $context = \context_module::instance($cm->id);
         self::validate_context($context);
         require_capability('moodle/course:manageactivities', $context);
         if ($cm->modname === 'resource' && count($params['files']) !== 1) {
-            throw new \moodle_exception('onefileonly', 'local_coursefiles');
+            throw new \moodle_exception('onefileonly', 'local_visudesk');
         }
 
         $course = get_course($cm->course);

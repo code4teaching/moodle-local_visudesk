@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -31,7 +31,7 @@ use core_external\external_value;
  * The file is kept in the plugin's file area of the calling user (one file per course, replaced by the next
  * backup) and can be downloaded with the token through webservice/pluginfile.php.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -90,7 +90,7 @@ class backup_course extends external_api {
                 }
             }
             if ($plan->setting_exists('users') && $plan->get_setting('users')->get_value()) {
-                throw new \moodle_exception('backupwithusers', 'local_coursefiles');
+                throw new \moodle_exception('backupwithusers', 'local_visudesk');
             }
             $bc->execute_plan();
             $results = $bc->get_results();
@@ -100,16 +100,16 @@ class backup_course extends external_api {
 
         $file = $results['backup_destination'] ?? null;
         if (!$file instanceof \stored_file) {
-            throw new \moodle_exception('backupfailed', 'local_coursefiles');
+            throw new \moodle_exception('backupfailed', 'local_visudesk');
         }
 
         // Keep only this backup for this course in the plugin area of the user, then remove Moodle's copy.
         $usercontext = \context_user::instance($USER->id);
         $fs = get_file_storage();
-        $fs->delete_area_files($usercontext->id, 'local_coursefiles', 'backup', $course->id);
+        $fs->delete_area_files($usercontext->id, 'local_visudesk', 'backup', $course->id);
         $copy = $fs->create_file_from_storedfile([
             'contextid' => $usercontext->id,
-            'component' => 'local_coursefiles',
+            'component' => 'local_visudesk',
             'filearea' => 'backup',
             'itemid' => $course->id,
             'filepath' => '/',
@@ -119,7 +119,7 @@ class backup_course extends external_api {
 
         $url = \moodle_url::make_webservice_pluginfile_url(
             $usercontext->id,
-            'local_coursefiles',
+            'local_visudesk',
             'backup',
             $course->id,
             '/',

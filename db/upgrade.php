@@ -17,7 +17,7 @@
 /**
  * Upgrade steps.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,24 +28,7 @@
  * @param int $oldversion
  * @return bool
  */
-function xmldb_local_coursefiles_upgrade($oldversion) {
-    global $DB;
-    $dbman = $DB->get_manager();
-
-    if ($oldversion < 2026112001) {
-        // Courses created automatically from course requests, so the approver can check them later.
-        $table = new xmldb_table('local_coursefiles_autoappr');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
-        $table->add_field('timechecked', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('courseid', XMLDB_KEY_FOREIGN_UNIQUE, ['courseid'], 'course', ['id']);
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-        upgrade_plugin_savepoint(true, 2026112001, 'local', 'coursefiles');
-    }
-
+function xmldb_local_visudesk_upgrade($oldversion) {
+    // Version 1.0.0 is the first release under this name; local_coursefiles had the earlier steps.
     return true;
 }

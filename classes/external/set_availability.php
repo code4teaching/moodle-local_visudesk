@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -27,7 +27,7 @@ use core_external\external_value;
  * Other restrictions stay. Before the date students don't see the activity at all (hidebefore=1) or see it greyed
  * out with the date (hidebefore=0).
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -67,7 +67,7 @@ class set_availability extends external_api {
         require_capability('moodle/course:manageactivities', $context);
         require_capability('moodle/course:activityvisibility', $context);
         if (empty($CFG->enableavailability)) {
-            throw new \moodle_exception('availabilitydisabled', 'local_coursefiles');
+            throw new \moodle_exception('availabilitydisabled', 'local_visudesk');
         }
 
         $tree = self::with_date($cm->availability, $params['timefrom'], (bool)$params['hidebefore']);

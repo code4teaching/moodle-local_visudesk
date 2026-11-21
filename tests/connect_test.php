@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles;
+namespace local_visudesk;
 
-use local_coursefiles\local\connect;
+use local_visudesk\local\connect;
 
 /**
  * Tests for connecting VisuDesk without copying a key.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @category   test
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

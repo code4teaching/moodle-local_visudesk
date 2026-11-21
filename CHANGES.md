@@ -1,5 +1,16 @@
 # Changes
 
+## 1.0.0 (2026-11-21)
+
+- New name: **local_visudesk** (shown as “VisuDesk”), formerly local_coursefiles (Course Files) 0.16.0. Another plugin
+  in the Moodle plugins directory already uses the name local_coursefiles, and Moodle allows each name only once.
+- All web service functions are now called `local_visudesk_…` instead of `local_coursefiles_…`, with the same
+  parameters; capabilities, settings and the connect page (`/local/visudesk/connect.php`) moved along.
+- When installed next to local_coursefiles, it takes over its settings and the list of automatically created courses.
+  Both can run side by side while apps switch over; uninstall local_coursefiles afterwards.
+
+The entries below are the history of local_coursefiles.
+
 ## 0.16.0 (2026-11-21)
 
 - Automatic approval of course requests works with any naming scheme: new settings *Scheme for the full name* and
@@ -24,7 +35,7 @@
 - `request_course` also returns `courseid` and `categoryname` when the course was created at once (`requestid` is 0).
 - New `get_autoapproved_courses` and `check_autoapproved_course`: the approver sees the courses created automatically
   (with their teachers) and marks them as checked. The plugin stores only course, time created and time checked
-  (new table `local_coursefiles_autoappr`), no personal data.
+  (new table `local_visudesk_autoappr`), no personal data.
 
 ## 0.13.0 (2026-11-20)
 
@@ -72,7 +83,7 @@
 
 ## 0.7.0 (2026-11-19)
 
-- New page `local/coursefiles/connect.php`: connects VisuDesk without copying a key. The teacher signs in to Moodle
+- New page `local/visudesk/connect.php`: connects VisuDesk without copying a key. The teacher signs in to Moodle
   as usual (single sign-on too), confirms, and Moodle hands the token for the service VisuDesk to the app on the same
   computer – like the launch of the Moodle mobile app. The app sends a random passport and accepts only a token that
   comes back with it; the token only goes to a loopback address (127.0.0.1, localhost) on the path `/verbunden`.

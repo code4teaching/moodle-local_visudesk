@@ -17,7 +17,7 @@
 /**
  * Scheduled tasks.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = [
     [
-        'classname' => '\local_coursefiles\task\sync_teacherrole',
+        'classname' => '\local_visudesk\task\sync_teacherrole',
         'minute'    => '41',
         'hour'      => '2',
         'day'       => '*',

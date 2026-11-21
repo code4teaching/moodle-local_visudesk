@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -24,7 +24,7 @@ use core_external\external_value;
 /**
  * Marks an automatically created course as checked (or not checked again).
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -54,9 +54,9 @@ class check_autoapproved_course extends external_api {
         $context = \context_system::instance();
         self::validate_context($context);
         require_capability('moodle/site:approvecourse', $context);
-        $record = $DB->get_record('local_coursefiles_autoappr', ['id' => $params['id']], '*', MUST_EXIST);
+        $record = $DB->get_record('local_visudesk_autoappr', ['id' => $params['id']], '*', MUST_EXIST);
         $record->timechecked = $params['checked'] ? time() : 0;
-        $DB->update_record('local_coursefiles_autoappr', $record);
+        $DB->update_record('local_visudesk_autoappr', $record);
         return ['timechecked' => (int)$record->timechecked];
     }
 

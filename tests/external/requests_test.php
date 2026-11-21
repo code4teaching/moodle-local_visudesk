@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 
 /**
  * Tests for the course request functions.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @category   test
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,8 +30,8 @@ use core_external\external_api;
 #[\PHPUnit\Framework\Attributes\CoversClass(get_course_requests::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(approve_course_request::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(reject_course_request::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(\local_coursefiles\local\requests::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(\local_coursefiles\local\autoapprove::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\local_visudesk\local\requests::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\local_visudesk\local\autoapprove::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(get_autoapproved_courses::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(check_autoapproved_course::class)]
 final class requests_test extends \advanced_testcase {
@@ -137,8 +137,8 @@ final class requests_test extends \advanced_testcase {
         $this->resetAfterTest();
         $this->enable_requests();
         $checker = $this->getDataGenerator()->create_user(['username' => 'pruefer']);
-        set_config('autoapprove', 1, 'local_coursefiles');
-        set_config('autoapprovenotify', 'pruefer', 'local_coursefiles');
+        set_config('autoapprove', 1, 'local_visudesk');
+        set_config('autoapprovenotify', 'pruefer', 'local_visudesk');
         $cat = $this->getDataGenerator()->create_category(['name' => 'BS']);
         $archive = $this->getDataGenerator()->create_category(['name' => 'Archiv']);
         $this->getDataGenerator()->create_course(['fullname' => '2025 11FI2 MusA Datenbanken', 'category' => $cat->id]);
@@ -156,7 +156,7 @@ final class requests_test extends \advanced_testcase {
         $this->assertEquals(0, $course->visible);
         $this->assertTrue(is_enrolled(\context_course::instance($course->id), $teacher));
         $this->assertFalse($DB->record_exists('course_request', []));
-        $mine = array_filter($sink->get_messages(), fn($m) => $m->component === 'local_coursefiles');
+        $mine = array_filter($sink->get_messages(), fn($m) => $m->component === 'local_visudesk');
         $this->assertCount(1, $mine);
         $this->assertEquals($checker->id, reset($mine)->useridto);
 
@@ -185,16 +185,16 @@ final class requests_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
         $this->enable_requests();
-        set_config('autoapprove', 1, 'local_coursefiles');
+        set_config('autoapprove', 1, 'local_visudesk');
         $cat = $this->getDataGenerator()->create_category();
         $this->getDataGenerator()->create_course(['fullname' => '2025 11FI2 MusA Datenbanken', 'category' => $cat->id]);
         $this->setUser($this->getDataGenerator()->create_user());
         $sink = $this->redirectMessages();
         $r = request_course::execute('2026 11FI2 SebH Objektorientierte Programmierung', '2026 11FI2 SebH OOP');
-        $this->assertTrue($DB->record_exists('local_coursefiles_autoappr', ['courseid' => $r['courseid']]));
+        $this->assertTrue($DB->record_exists('local_visudesk_autoappr', ['courseid' => $r['courseid']]));
         $this->setAdminUser();
         delete_course($r['courseid'], false);
-        $this->assertFalse($DB->record_exists('local_coursefiles_autoappr', ['courseid' => $r['courseid']]));
+        $this->assertFalse($DB->record_exists('local_visudesk_autoappr', ['courseid' => $r['courseid']]));
         $sink->close();
     }
 
@@ -205,7 +205,7 @@ final class requests_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
         $this->enable_requests();
-        set_config('autoapprove', 1, 'local_coursefiles');
+        set_config('autoapprove', 1, 'local_visudesk');
         $this->setUser($this->getDataGenerator()->create_user());
         $r = request_course::execute('2026 12FI9 SebH Netzwerke', '2026 12FI9 SebH NW');
         $this->assertGreaterThan(0, $r['requestid']);
@@ -223,10 +223,10 @@ final class requests_test extends \advanced_testcase {
     public function test_autoapprove_own_scheme(): void {
         $this->resetAfterTest();
         $this->enable_requests();
-        set_config('autoapprove', 1, 'local_coursefiles');
-        set_config('autoapprovefullname', '/^(?<class>[0-9]{1,2}[a-z]) · .+ · (?<key>20\d{2})$/u', 'local_coursefiles');
-        set_config('autoapproveshortname', '/^(?<class>[0-9]{1,2}[a-z])-\S+-(?<key>20\d{2})$/u', 'local_coursefiles');
-        set_config('autoapprovearchive', 'Ehemalige', 'local_coursefiles');
+        set_config('autoapprove', 1, 'local_visudesk');
+        set_config('autoapprovefullname', '/^(?<class>[0-9]{1,2}[a-z]) · .+ · (?<key>20\d{2})$/u', 'local_visudesk');
+        set_config('autoapproveshortname', '/^(?<class>[0-9]{1,2}[a-z])-\S+-(?<key>20\d{2})$/u', 'local_visudesk');
+        set_config('autoapprovearchive', 'Ehemalige', 'local_visudesk');
         $cat = $this->getDataGenerator()->create_category(['name' => 'Klasse 7']);
         $old = $this->getDataGenerator()->create_category(['name' => 'Ehemalige']);
         $this->getDataGenerator()->create_course(['fullname' => '7b · Deutsch · 2025', 'category' => $cat->id]);
@@ -242,10 +242,10 @@ final class requests_test extends \advanced_testcase {
         $this->assertSame(0, $r['courseid']);
         $sink->close();
 
-        $this->assertTrue(\local_coursefiles\local\autoapprove::valid_pattern('/^(?<class>\S+) .+$/u'));
-        $this->assertFalse(\local_coursefiles\local\autoapprove::valid_pattern('/^(\S+) .+$/u'));
-        $this->assertFalse(\local_coursefiles\local\autoapprove::valid_pattern('/^(?<class>\S+/u'));
-        set_config('autoapprovefullname', 'kaputt', 'local_coursefiles');
-        $this->assertSame(\local_coursefiles\local\autoapprove::FULLNAME, \local_coursefiles\local\autoapprove::fullname_pattern());
+        $this->assertTrue(\local_visudesk\local\autoapprove::valid_pattern('/^(?<class>\S+) .+$/u'));
+        $this->assertFalse(\local_visudesk\local\autoapprove::valid_pattern('/^(\S+) .+$/u'));
+        $this->assertFalse(\local_visudesk\local\autoapprove::valid_pattern('/^(?<class>\S+/u'));
+        set_config('autoapprovefullname', 'kaputt', 'local_visudesk');
+        $this->assertSame(\local_visudesk\local\autoapprove::FULLNAME, \local_visudesk\local\autoapprove::fullname_pattern());
     }
 }

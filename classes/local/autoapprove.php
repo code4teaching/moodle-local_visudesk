@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\local;
+namespace local_visudesk\local;
 
 /**
  * Approves course requests at once when they follow the naming scheme and the class already has a course.
@@ -26,7 +26,7 @@ namespace local_coursefiles\local;
  * (archive categories left out), hidden, with the requester as teacher. One person chosen in the settings gets a message
  * to check it.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -44,7 +44,7 @@ class autoapprove {
      * @return string
      */
     public static function fullname_pattern(): string {
-        $pattern = trim((string)get_config('local_coursefiles', 'autoapprovefullname'));
+        $pattern = trim((string)get_config('local_visudesk', 'autoapprovefullname'));
         return self::valid_pattern($pattern) ? $pattern : self::FULLNAME;
     }
 
@@ -54,7 +54,7 @@ class autoapprove {
      * @return string
      */
     public static function shortname_pattern(): string {
-        $pattern = trim((string)get_config('local_coursefiles', 'autoapproveshortname'));
+        $pattern = trim((string)get_config('local_visudesk', 'autoapproveshortname'));
         return self::valid_pattern($pattern) ? $pattern : self::SHORTNAME;
     }
 
@@ -91,7 +91,7 @@ class autoapprove {
      * @return bool
      */
     public static function enabled(): bool {
-        return (bool)get_config('local_coursefiles', 'autoapprove');
+        return (bool)get_config('local_visudesk', 'autoapprove');
     }
 
     /**
@@ -142,8 +142,8 @@ class autoapprove {
             50
         );
         $pattern = self::fullname_pattern();
-        $archive = trim((string)(get_config('local_coursefiles', 'autoapprovearchive') === false
-            ? self::ARCHIVE : get_config('local_coursefiles', 'autoapprovearchive')));
+        $archive = trim((string)(get_config('local_visudesk', 'autoapprovearchive') === false
+            ? self::ARCHIVE : get_config('local_visudesk', 'autoapprovearchive')));
         foreach ($records as $record) {
             $parsed = self::parse($pattern, $record->fullname);
             if (!$parsed || \core_text::strtolower($parsed['class']) !== $class) {
@@ -194,7 +194,7 @@ class autoapprove {
         ]);
         $courseid = (int)requests::load((int)$id)->approve();
         course_change_visibility($courseid, false);
-        $DB->insert_record('local_coursefiles_autoappr', (object)[
+        $DB->insert_record('local_visudesk_autoappr', (object)[
             'courseid' => $courseid, 'timecreated' => time(), 'timechecked' => 0,
         ]);
         $transaction->allow_commit();
@@ -210,7 +210,7 @@ class autoapprove {
      */
     public static function checker(): \stdClass {
         global $DB, $CFG;
-        $username = trim((string)get_config('local_coursefiles', 'autoapprovenotify'));
+        $username = trim((string)get_config('local_visudesk', 'autoapprovenotify'));
         if ($username !== '') {
             $user = $DB->get_record('user', ['username' => \core_text::strtolower($username),
                 'mnethostid' => $CFG->mnet_localhost_id, 'deleted' => 0, 'suspended' => 0]);
@@ -239,12 +239,12 @@ class autoapprove {
             'url' => $url->out(false),
         ];
         $message = new \core\message\message();
-        $message->component = 'local_coursefiles';
+        $message->component = 'local_visudesk';
         $message->name = 'courseautoapproved';
         $message->userfrom = \core_user::get_noreply_user();
         $message->userto = self::checker();
-        $message->subject = get_string('autoapprovedsubject', 'local_coursefiles', $a);
-        $message->fullmessage = get_string('autoapprovedbody', 'local_coursefiles', $a);
+        $message->subject = get_string('autoapprovedsubject', 'local_visudesk', $a);
+        $message->fullmessage = get_string('autoapprovedbody', 'local_visudesk', $a);
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = '';
         $message->smallmessage = $message->subject;
@@ -267,7 +267,7 @@ class autoapprove {
         $where = $withchecked ? '' : 'WHERE a.timechecked = 0';
         $records = $DB->get_records_sql(
             "SELECT a.id, a.courseid, a.timecreated, a.timechecked, c.fullname, c.shortname, c.category, c.visible
-               FROM {local_coursefiles_autoappr} a
+               FROM {local_visudesk_autoappr} a
                JOIN {course} c ON c.id = a.courseid
              $where
            ORDER BY a.timecreated DESC, a.id DESC"

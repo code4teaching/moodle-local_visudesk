@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Connects VisuDesk to the signed-in user's account (see \local_coursefiles\local\connect).
+ * Connects VisuDesk to the signed-in user's account (see \local_visudesk\local\connect).
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_coursefiles\local\connect;
+use local_visudesk\local\connect;
 
 require(__DIR__ . '/../../config.php');
 
@@ -30,20 +30,20 @@ $passport = required_param('passport', PARAM_ALPHANUM);
 $return = required_param('return', PARAM_RAW);
 $servicename = optional_param('service', 'visudesk', PARAM_ALPHANUMEXT);
 
-$url = new moodle_url('/local/coursefiles/connect.php', ['passport' => $passport, 'return' => $return,
+$url = new moodle_url('/local/visudesk/connect.php', ['passport' => $passport, 'return' => $return,
     'service' => $servicename]);
 $PAGE->set_url($url);
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
-$PAGE->set_title(get_string('connecttitle', 'local_coursefiles'));
-$PAGE->set_heading(get_string('connecttitle', 'local_coursefiles'));
+$PAGE->set_title(get_string('connecttitle', 'local_visudesk'));
+$PAGE->set_heading(get_string('connecttitle', 'local_visudesk'));
 
 require_login(null, false);
 if (isguestuser()) {
     throw new moodle_exception('noguest');
 }
 if (strlen($passport) < 16 || !connect::valid_return($return)) {
-    throw new moodle_exception('connectinvalid', 'local_coursefiles');
+    throw new moodle_exception('connectinvalid', 'local_visudesk');
 }
 $service = connect::service($servicename);
 
@@ -58,9 +58,9 @@ if (optional_param('confirm', 0, PARAM_BOOL) && confirm_sesskey()) {
 
 echo $OUTPUT->header();
 echo $OUTPUT->confirm(
-    get_string('connectquestion', 'local_coursefiles', ['name' => fullname($USER), 'service' => format_string($service->name)]),
+    get_string('connectquestion', 'local_visudesk', ['name' => fullname($USER), 'service' => format_string($service->name)]),
     new moodle_url($url, ['confirm' => 1]),
     new moodle_url('/'),
-    ['continuestr' => get_string('connectbutton', 'local_coursefiles')]
+    ['continuestr' => get_string('connectbutton', 'local_visudesk')]
 );
 echo $OUTPUT->footer();

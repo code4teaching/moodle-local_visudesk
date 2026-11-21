@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Library functions of Course Files.
+ * Library functions of VisuDesk.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Serves course backups created by local_coursefiles_backup_course, only to the user who created them
+ * Serves course backups created by local_visudesk_backup_course, only to the user who created them
  * and only while that user may still download backups of the course.
  *
  * @param stdClass|null $course
@@ -35,7 +35,7 @@
  * @param array $options
  * @return bool false if the file was not found
  */
-function local_coursefiles_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
+function local_visudesk_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
     global $USER;
     if ($filearea !== 'backup' || $context->contextlevel != CONTEXT_USER || $context->instanceid != $USER->id) {
         return false;
@@ -48,7 +48,7 @@ function local_coursefiles_pluginfile($course, $cm, $context, $filearea, $args, 
     }
     $filename = array_pop($args);
     $filepath = $args ? '/' . implode('/', $args) . '/' : '/';
-    $file = get_file_storage()->get_file($context->id, 'local_coursefiles', 'backup', $courseid, $filepath, $filename);
+    $file = get_file_storage()->get_file($context->id, 'local_visudesk', 'backup', $courseid, $filepath, $filename);
     if (!$file || $file->is_directory()) {
         return false;
     }

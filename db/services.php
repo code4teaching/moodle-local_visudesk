@@ -17,7 +17,7 @@
 /**
  * Web service functions.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,156 +25,156 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
-    'local_coursefiles_create_resource' => [
-        'classname'    => 'local_coursefiles\external\create_resource',
+    'local_visudesk_create_resource' => [
+        'classname'    => 'local_visudesk\external\create_resource',
         'description'  => 'Creates a file resource (e.g. a PDF worksheet) in a course section. The file is sent base64 encoded. ' .
             'New resources are hidden unless visible=1.',
         'type'         => 'write',
         'capabilities' => 'mod/resource:addinstance',
     ],
-    'local_coursefiles_create_folder' => [
-        'classname'    => 'local_coursefiles\external\create_folder',
+    'local_visudesk_create_folder' => [
+        'classname'    => 'local_visudesk\external\create_folder',
         'description'  => 'Creates a folder with several files (base64 encoded) in a course section.',
         'type'         => 'write',
         'capabilities' => 'mod/folder:addinstance',
     ],
-    'local_coursefiles_update_files' => [
-        'classname'    => 'local_coursefiles\external\update_files',
+    'local_visudesk_update_files' => [
+        'classname'    => 'local_visudesk\external\update_files',
         'description'  => 'Replaces the file of a file resource or all files of a folder, e.g. with a newer version. ' .
             'The activity keeps its ID, place and settings.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:manageactivities',
     ],
-    'local_coursefiles_create_section' => [
-        'classname'    => 'local_coursefiles\external\create_section',
+    'local_visudesk_create_section' => [
+        'classname'    => 'local_visudesk\external\create_section',
         'description'  => 'Creates a course section at the end or at a given position (hidden unless visible=1).',
         'type'         => 'write',
         'capabilities' => 'moodle/course:update',
     ],
-    'local_coursefiles_update_section' => [
-        'classname'    => 'local_coursefiles\external\update_section',
+    'local_visudesk_update_section' => [
+        'classname'    => 'local_visudesk\external\update_section',
         'description'  => 'Changes name, summary or visibility of a course section.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:update, moodle/course:sectionvisibility',
     ],
-    'local_coursefiles_move_section' => [
-        'classname'    => 'local_coursefiles\external\move_section',
+    'local_visudesk_move_section' => [
+        'classname'    => 'local_visudesk\external\move_section',
         'description'  => 'Moves a course section to another position; its activities move with it.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:movesections',
     ],
-    'local_coursefiles_set_visibility' => [
-        'classname'    => 'local_coursefiles\external\set_visibility',
+    'local_visudesk_set_visibility' => [
+        'classname'    => 'local_visudesk\external\set_visibility',
         'description'  => 'Shows or hides an activity or resource.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:activityvisibility',
     ],
-    'local_coursefiles_set_course_visibility' => [
-        'classname'    => 'local_coursefiles\external\set_course_visibility',
+    'local_visudesk_set_course_visibility' => [
+        'classname'    => 'local_visudesk\external\set_course_visibility',
         'description'  => 'Shows or hides a whole course for students (only this setting).',
         'type'         => 'write',
         'capabilities' => 'moodle/course:visibility',
     ],
-    'local_coursefiles_create_assign' => [
-        'classname'    => 'local_coursefiles\external\create_assign',
+    'local_visudesk_create_assign' => [
+        'classname'    => 'local_visudesk\external\create_assign',
         'description'  => 'Creates an assignment (file submissions, due date, task with attached files, feedback files on).',
         'type'         => 'write',
         'capabilities' => 'moodle/course:manageactivities, mod/assign:addinstance',
     ],
-    'local_coursefiles_set_assign_duedate' => [
-        'classname'    => 'local_coursefiles\external\set_assign_duedate',
+    'local_visudesk_set_assign_duedate' => [
+        'classname'    => 'local_visudesk\external\set_assign_duedate',
         'description'  => 'Changes the due date of an assignment.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:manageactivities',
     ],
-    'local_coursefiles_update_assign' => [
-        'classname'    => 'local_coursefiles\external\update_assign',
+    'local_visudesk_update_assign' => [
+        'classname'    => 'local_visudesk\external\update_assign',
         'description'  => 'Changes an assignment: name, task description, attached files and due date (only what is passed).',
         'type'         => 'write',
         'capabilities' => 'moodle/course:manageactivities',
     ],
-    'local_coursefiles_get_assign_grading' => [
-        'classname'    => 'local_coursefiles\external\get_assign_grading',
+    'local_visudesk_get_assign_grading' => [
+        'classname'    => 'local_visudesk\external\get_assign_grading',
         'description'  => 'Grading overview of an assignment: grade type, scale items, marking workflow and per participant '
             . 'the grade, workflow state, feedback comment and number of feedback files.',
         'type'         => 'read',
         'capabilities' => 'mod/assign:grade',
     ],
-    'local_coursefiles_grade_submission' => [
-        'classname'    => 'local_coursefiles\external\grade_submission',
+    'local_visudesk_grade_submission' => [
+        'classname'    => 'local_visudesk\external\grade_submission',
         'description'  => 'Grades one participant: grade, feedback comment and marking workflow state.',
         'type'         => 'write',
         'capabilities' => 'mod/assign:grade',
     ],
-    'local_coursefiles_release_grades' => [
-        'classname'    => 'local_coursefiles\external\release_grades',
+    'local_visudesk_release_grades' => [
+        'classname'    => 'local_visudesk\external\release_grades',
         'description'  => 'Releases grades of an assignment with marking workflow, so students see them.',
         'type'         => 'write',
         'capabilities' => 'mod/assign:grade, mod/assign:releasegrades',
     ],
-    'local_coursefiles_set_feedback_files' => [
-        'classname'    => 'local_coursefiles\external\set_feedback_files',
+    'local_visudesk_set_feedback_files' => [
+        'classname'    => 'local_visudesk\external\set_feedback_files',
         'description'  => 'Replaces the feedback files of one student in an assignment (the grade stays).',
         'type'         => 'write',
         'capabilities' => 'mod/assign:grade',
     ],
-    'local_coursefiles_set_availability' => [
-        'classname'    => 'local_coursefiles\external\set_availability',
+    'local_visudesk_set_availability' => [
+        'classname'    => 'local_visudesk\external\set_availability',
         'description'  => 'Plans when an activity becomes available: a date restriction "from" (or none) and visible.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:manageactivities, moodle/course:activityvisibility',
     ],
-    'local_coursefiles_backup_course' => [
-        'classname'    => 'local_coursefiles\external\backup_course',
+    'local_visudesk_backup_course' => [
+        'classname'    => 'local_visudesk\external\backup_course',
         'description'  => 'Creates a Moodle backup (.mbz) of a course without user data and returns a download address. ' .
             'Refuses if the site forces user data into backups.',
         'type'         => 'write',
         'capabilities' => 'moodle/backup:backupcourse, moodle/backup:downloadfile',
     ],
-    'local_coursefiles_request_course' => [
-        'classname'    => 'local_coursefiles\external\request_course',
+    'local_visudesk_request_course' => [
+        'classname'    => 'local_visudesk\external\request_course',
         'description'  => 'Asks for a new course (Moodle course request). Needs course requests to be enabled on the site.',
         'type'         => 'write',
         'capabilities' => 'moodle/course:request',
     ],
-    'local_coursefiles_get_course_requests' => [
-        'classname'    => 'local_coursefiles\external\get_course_requests',
+    'local_visudesk_get_course_requests' => [
+        'classname'    => 'local_visudesk\external\get_course_requests',
         'description'  => 'Lists pending course requests: the caller\'s own, or all of them for approvers (all=1).',
         'type'         => 'read',
     ],
-    'local_coursefiles_approve_course_request' => [
-        'classname'    => 'local_coursefiles\external\approve_course_request',
+    'local_visudesk_approve_course_request' => [
+        'classname'    => 'local_visudesk\external\approve_course_request',
         'description'  => 'Approves a course request, optionally with a corrected name and another category. ' .
             'Moodle creates the course, enrols the requester as teacher and notifies them.',
         'type'         => 'write',
         'capabilities' => 'moodle/site:approvecourse',
     ],
-    'local_coursefiles_reject_course_request' => [
-        'classname'    => 'local_coursefiles\external\reject_course_request',
+    'local_visudesk_reject_course_request' => [
+        'classname'    => 'local_visudesk\external\reject_course_request',
         'description'  => 'Rejects a course request; the reason is sent to the requester.',
         'type'         => 'write',
         'capabilities' => 'moodle/site:approvecourse',
     ],
-    'local_coursefiles_get_self_enrolment' => [
-        'classname'    => 'local_coursefiles\external\get_self_enrolment',
+    'local_visudesk_get_self_enrolment' => [
+        'classname'    => 'local_visudesk\external\get_self_enrolment',
         'description'  => 'Reads the self enrolment of a course: on or off and the enrolment key.',
         'type'         => 'read',
         'capabilities' => 'enrol/self:config',
     ],
-    'local_coursefiles_set_self_enrolment' => [
-        'classname'    => 'local_coursefiles\external\set_self_enrolment',
+    'local_visudesk_set_self_enrolment' => [
+        'classname'    => 'local_visudesk\external\set_self_enrolment',
         'description'  => 'Turns self enrolment of a course on or off and sets the enrolment key; adds the method if missing.',
         'type'         => 'write',
         'capabilities' => 'enrol/self:config, moodle/course:enrolconfig',
     ],
-    'local_coursefiles_get_autoapproved_courses' => [
-        'classname'    => 'local_coursefiles\external\get_autoapproved_courses',
+    'local_visudesk_get_autoapproved_courses' => [
+        'classname'    => 'local_visudesk\external\get_autoapproved_courses',
         'description'  => 'Lists courses created automatically from course requests, for the approver to check.',
         'type'         => 'read',
         'capabilities' => 'moodle/site:approvecourse',
     ],
-    'local_coursefiles_check_autoapproved_course' => [
-        'classname'    => 'local_coursefiles\external\check_autoapproved_course',
+    'local_visudesk_check_autoapproved_course' => [
+        'classname'    => 'local_visudesk\external\check_autoapproved_course',
         'description'  => 'Marks an automatically created course as checked.',
         'type'         => 'write',
         'capabilities' => 'moodle/site:approvecourse',
@@ -182,9 +182,9 @@ $functions = [
 ];
 
 $services = [
-    'Course Files Service' => [
+    'VisuDesk Plugin Service' => [
         'functions'       => array_keys($functions),
-        'shortname'       => 'local_coursefiles',
+        'shortname'       => 'local_visudesk',
         'restrictedusers' => 1,
         'enabled'         => 1,
         'uploadfiles'     => 1,

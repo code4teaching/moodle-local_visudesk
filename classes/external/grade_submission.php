@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -26,7 +26,7 @@ use core_external\external_value;
  * (e.g. "readyforrelease"; students only see the grade once it is "released"). Feedback files stay
  * (see set_feedback_files).
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -92,7 +92,7 @@ class grade_submission extends external_api {
         $assign = new \assign($context, $cm, get_course($cm->course));
         $instance = $assign->get_instance();
         if (!$assign->get_participant($params['userid'])) {
-            throw new \moodle_exception('notparticipant', 'local_coursefiles');
+            throw new \moodle_exception('notparticipant', 'local_visudesk');
         }
         $state = $params['workflowstate'];
         if ($state !== '' && (!$instance->markingworkflow || !in_array($state, self::STATES, true))) {
@@ -107,15 +107,15 @@ class grade_submission extends external_api {
                 $value = -1;
             } else if ((int)$instance->grade > 0) {
                 if ($value > (float)$instance->grade) {
-                    throw new \moodle_exception('gradetoohigh', 'local_coursefiles', '', format_float($instance->grade, -1));
+                    throw new \moodle_exception('gradetoohigh', 'local_visudesk', '', format_float($instance->grade, -1));
                 }
             } else if ((int)$instance->grade < 0) {
                 $items = (int)count(explode(',', (string)$DB->get_field('scale', 'scale', ['id' => -(int)$instance->grade])));
                 if ($value != round($value) || $value < 1 || $value > $items) {
-                    throw new \moodle_exception('gradenotinscale', 'local_coursefiles');
+                    throw new \moodle_exception('gradenotinscale', 'local_visudesk');
                 }
             } else {
-                throw new \moodle_exception('nogradetype', 'local_coursefiles');
+                throw new \moodle_exception('nogradetype', 'local_visudesk');
             }
             $record->grade = $value;
             $record->grader = $USER->id;

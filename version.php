@@ -15,17 +15,17 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Course Files: web service functions to upload files and folders and to show or hide activities.
+ * VisuDesk: web service functions to upload files and folders and to show or hide activities.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_coursefiles';
+$plugin->component = 'local_visudesk';
 $plugin->version   = 2026112100;
 $plugin->requires  = 2025041400; // Moodle 5.0.
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '0.16.0';
+$plugin->maturity  = MATURITY_BETA;
+$plugin->release   = '1.0.0';

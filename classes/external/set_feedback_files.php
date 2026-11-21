@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
-use local_coursefiles\local\files;
+use local_visudesk\local\files;
 
 /**
  * Gives one student feedback files in an assignment, e.g. their corrected and annotated submission.
@@ -28,7 +28,7 @@ use local_coursefiles\local\files;
  * Replaces the feedback files of this student (feedback type "Feedback files" must be enabled in the assignment).
  * The grade itself is not changed.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -70,10 +70,10 @@ class set_feedback_files extends external_api {
         $assign = new \assign($context, $cm, null);
         $plugin = $assign->get_feedback_plugin_by_type('file');
         if (!$plugin || !$plugin->is_enabled() || !$plugin->is_visible()) {
-            throw new \moodle_exception('feedbackfilesdisabled', 'local_coursefiles');
+            throw new \moodle_exception('feedbackfilesdisabled', 'local_visudesk');
         }
         if (!$assign->get_participant($params['userid'])) {
-            throw new \moodle_exception('notparticipant', 'local_coursefiles');
+            throw new \moodle_exception('notparticipant', 'local_visudesk');
         }
 
         $decoded = files::decode($params['files'], get_course($cm->course), $context);

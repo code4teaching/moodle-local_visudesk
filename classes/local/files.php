@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\local;
+namespace local_visudesk\local;
 
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
@@ -23,7 +23,7 @@ use core_external\external_value;
 /**
  * Helpers for files sent as base64 to the web service functions.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -60,7 +60,7 @@ class files {
     public static function decode(array $files, \stdClass $course, \context $context): array {
         global $CFG;
         if (!$files) {
-            throw new \moodle_exception('nofiles', 'local_coursefiles');
+            throw new \moodle_exception('nofiles', 'local_visudesk');
         }
         $maxbytes = get_user_max_upload_file_size($context, $CFG->maxbytes, $course->maxbytes);
         $result = [];
@@ -68,14 +68,14 @@ class files {
         foreach ($files as $file) {
             $filename = clean_param($file['filename'], PARAM_FILE);
             if ($filename === '' || isset($names[$filename])) {
-                throw new \moodle_exception('invalidfilename', 'local_coursefiles', '', s($file['filename']));
+                throw new \moodle_exception('invalidfilename', 'local_visudesk', '', s($file['filename']));
             }
             $content = base64_decode($file['content'], true);
             if ($content === false) {
-                throw new \moodle_exception('invalidcontent', 'local_coursefiles', '', $filename);
+                throw new \moodle_exception('invalidcontent', 'local_visudesk', '', $filename);
             }
             if ($maxbytes > 0 && strlen($content) > $maxbytes) {
-                throw new \moodle_exception('filetoobig', 'local_coursefiles', '', (object)[
+                throw new \moodle_exception('filetoobig', 'local_visudesk', '', (object)[
                     'filename' => $filename, 'size' => display_size(strlen($content)), 'max' => display_size($maxbytes),
                 ]);
             }

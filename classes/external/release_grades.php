@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -26,7 +26,7 @@ use core_external\external_value;
  * Releases grades of an assignment with marking workflow: the participants (all graded ones if none are given) get
  * the state "released", and their grades go to the gradebook, so students see them.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -69,7 +69,7 @@ class release_grades extends external_api {
         $assign = new \assign($context, $cm, get_course($cm->course));
         $instance = $assign->get_instance();
         if (!$instance->markingworkflow) {
-            throw new \moodle_exception('nomarkingworkflow', 'local_coursefiles');
+            throw new \moodle_exception('nomarkingworkflow', 'local_visudesk');
         }
         $ids = array_map('intval', $params['userids']);
         if (!$ids) {

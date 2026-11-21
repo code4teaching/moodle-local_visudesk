@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles;
+namespace local_visudesk;
 
 /**
  * Tests for the site role for teachers.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @category   test
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -37,8 +37,8 @@ final class teacherrole_test extends \advanced_testcase {
         global $DB;
         $siterole = create_role('Web service user', 'wsuser', '');
         set_role_contextlevels($siterole, [CONTEXT_SYSTEM]);
-        set_config('teacherrole', $DB->get_field('role', 'id', ['shortname' => 'editingteacher']), 'local_coursefiles');
-        set_config('siterole', $siterole, 'local_coursefiles');
+        set_config('teacherrole', $DB->get_field('role', 'id', ['shortname' => 'editingteacher']), 'local_visudesk');
+        set_config('siterole', $siterole, 'local_visudesk');
         return $siterole;
     }
 
@@ -96,7 +96,7 @@ final class teacherrole_test extends \advanced_testcase {
         $siterole = $this->setup_roles();
         $callback = [local\teacherrole::class, 'sync'];
         $this->assertTrue(is_callable($callback));
-        $callback('local_coursefiles/siterole');
+        $callback('local_visudesk/siterole');
         $this->assertTrue(user_has_role_assignment($teacher->id, $siterole, \context_system::instance()->id));
     }
 

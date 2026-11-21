@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 
 /**
- * Tests for the Course Files web service functions.
+ * Tests for the VisuDesk web service functions.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @category   test
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -34,8 +34,8 @@ use core_external\external_api;
 #[\PHPUnit\Framework\Attributes\CoversClass(update_section::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(move_section::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(backup_course::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(\local_coursefiles\local\files::class)]
-final class coursefiles_test extends \advanced_testcase {
+#[\PHPUnit\Framework\Attributes\CoversClass(\local_visudesk\local\files::class)]
+final class visudesk_test extends \advanced_testcase {
     /**
      * A file as the web service expects it.
      *
@@ -281,17 +281,17 @@ final class coursefiles_test extends \advanced_testcase {
         $result = external_api::clean_returnvalue(backup_course::execute_returns(), backup_course::execute($course->id));
         $this->assertStringEndsWith('.mbz', $result['filename']);
         $this->assertGreaterThan(0, $result['filesize']);
-        $this->assertStringContainsString('/local_coursefiles/backup/' . $course->id . '/', $result['fileurl']);
+        $this->assertStringContainsString('/local_visudesk/backup/' . $course->id . '/', $result['fileurl']);
 
         $context = \context_user::instance($USER->id);
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'local_coursefiles', 'backup', $course->id, 'id', false);
+        $files = $fs->get_area_files($context->id, 'local_visudesk', 'backup', $course->id, 'id', false);
         $this->assertCount(1, $files);
         $this->assertEmpty($fs->get_area_files($context->id, 'user', 'backup', false, 'id', false));
 
         // A second backup replaces the first.
         backup_course::execute($course->id);
-        $this->assertCount(1, $fs->get_area_files($context->id, 'local_coursefiles', 'backup', $course->id, 'id', false));
+        $this->assertCount(1, $fs->get_area_files($context->id, 'local_visudesk', 'backup', $course->id, 'id', false));
     }
 
     /**

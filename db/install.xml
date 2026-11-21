@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/coursefiles/db" VERSION="20261121" COMMENT="XMLDB file for Moodle local/coursefiles"
+<XMLDB PATH="local/visudesk/db" VERSION="20261121" COMMENT="XMLDB file for Moodle local/visudesk"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="local_coursefiles_autoappr" COMMENT="Courses created automatically from course requests, until someone checked them">
+    <TABLE NAME="local_visudesk_autoappr" COMMENT="Courses created automatically from course requests, until someone checked them">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The new course"/>

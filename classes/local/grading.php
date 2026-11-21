@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\local;
+namespace local_visudesk\local;
 
 /**
  * Grading helpers: grade type of an assignment (points, a scale by name, or none) and the scale items.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -46,7 +46,7 @@ class grading {
                 1
             );
             if (!$scales) {
-                throw new \moodle_exception('scalenotfound', 'local_coursefiles', '', s($scalename));
+                throw new \moodle_exception('scalenotfound', 'local_visudesk', '', s($scalename));
             }
             return -(int)reset($scales)->id;
         }

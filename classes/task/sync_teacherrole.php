@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\task;
+namespace local_visudesk\task;
 
 /**
  * Daily check: everybody who teaches in a course has the site role (catches assignments made without events).
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,18 +30,18 @@ class sync_teacherrole extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name(): string {
-        return get_string('task_syncteacherrole', 'local_coursefiles');
+        return get_string('task_syncteacherrole', 'local_visudesk');
     }
 
     /**
      * Runs the task.
      */
     public function execute(): void {
-        if (!\local_coursefiles\local\teacherrole::roles()) {
+        if (!\local_visudesk\local\teacherrole::roles()) {
             mtrace('Site role for teachers is not set up – nothing to do.');
             return;
         }
-        $count = \local_coursefiles\local\teacherrole::sync();
+        $count = \local_visudesk\local\teacherrole::sync();
         mtrace("Site role given to {$count} teacher(s).");
     }
 }

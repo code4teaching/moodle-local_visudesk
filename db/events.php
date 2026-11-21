@@ -17,7 +17,7 @@
 /**
  * Event observers.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 $observers = [
     [
         'eventname' => '\core\event\role_assigned',
-        'callback'  => '\local_coursefiles\observer::role_assigned',
+        'callback'  => '\local_visudesk\observer::role_assigned',
     ],
     [
         'eventname' => '\core\event\course_deleted',
-        'callback'  => '\local_coursefiles\observer::course_deleted',
+        'callback'  => '\local_visudesk\observer::course_deleted',
     ],
 ];

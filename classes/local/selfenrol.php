@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\local;
+namespace local_visudesk\local;
 
 /**
  * Self enrolment of a course: the first "Self enrolment" method, its key and whether it is on.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -72,7 +72,7 @@ class selfenrol {
         $context = \context_course::instance($course->id);
         $plugin = enrol_get_plugin('self');
         if (!$plugin || !enrol_is_enabled('self')) {
-            throw new \moodle_exception('selfenroldisabled', 'local_coursefiles');
+            throw new \moodle_exception('selfenroldisabled', 'local_visudesk');
         }
         if ($password !== '') {
             if ($plugin->get_config('usepasswordpolicy')) {
@@ -82,7 +82,7 @@ class selfenrol {
                 }
             }
         } else if ($enabled && $plugin->get_config('requirepassword')) {
-            throw new \moodle_exception('selfenrolkeyrequired', 'local_coursefiles');
+            throw new \moodle_exception('selfenrolkeyrequired', 'local_visudesk');
         }
         $status = $enabled ? ENROL_INSTANCE_ENABLED : ENROL_INSTANCE_DISABLED;
 
@@ -90,7 +90,7 @@ class selfenrol {
         if (!$instance) {
             require_capability('moodle/course:enrolconfig', $context);
             if (!$plugin->can_add_instance($course->id)) {
-                throw new \moodle_exception('selfenrolcannotadd', 'local_coursefiles');
+                throw new \moodle_exception('selfenrolcannotadd', 'local_visudesk');
             }
             $fields = $plugin->get_instance_defaults();
             $fields['status'] = $status;

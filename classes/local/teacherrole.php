@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\local;
+namespace local_visudesk\local;
 
 /**
  * Gives a site role (e.g. "Web service user") to everybody who teaches in a course (site admins need no role).
@@ -22,7 +22,7 @@ namespace local_coursefiles\local;
  * Capabilities such as moodle/webservice:createtoken are checked in the system context, so a course role
  * like Teacher cannot grant them. This keeps a system role in step with the teacher role in courses.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,8 +33,8 @@ class teacherrole {
      * @return array|null [teacher role id, site role id]
      */
     public static function roles(): ?array {
-        $teacher = (int)get_config('local_coursefiles', 'teacherrole');
-        $site = (int)get_config('local_coursefiles', 'siterole');
+        $teacher = (int)get_config('local_visudesk', 'teacherrole');
+        $site = (int)get_config('local_visudesk', 'siterole');
         if (!$teacher || !$site || $teacher === $site) {
             return null;
         }
@@ -61,7 +61,7 @@ class teacherrole {
         if (user_has_role_assignment($userid, $roles[1], $system->id)) {
             return false;
         }
-        role_assign($roles[1], $userid, $system->id, 'local_coursefiles');
+        role_assign($roles[1], $userid, $system->id, 'local_visudesk');
         return true;
     }
 

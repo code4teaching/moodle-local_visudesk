@@ -14,22 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
-use local_coursefiles\local\files;
-use local_coursefiles\local\grading;
+use local_visudesk\local\files;
+use local_visudesk\local\grading;
 
 /**
  * Creates an assignment in a course section: file submissions, a due date, the task as text and/or attached files.
  *
  * Feedback comments and feedback files are switched on, so corrected files can be given back with set_feedback_files.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

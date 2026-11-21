@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\local;
+namespace local_visudesk\local;
 
 /**
  * Connecting a desktop app (VisuDesk) to Moodle without copying a key: the teacher signs in to Moodle as usual
@@ -22,7 +22,7 @@ namespace local_coursefiles\local;
  * computer. Works like the launch of the Moodle mobile app: the app sends a random passport and only accepts a token
  * that comes back with it. The token only ever goes to a loopback address (127.0.0.1, localhost, ::1).
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -64,11 +64,11 @@ class connect {
     public static function service(string $shortname): \stdClass {
         global $DB;
         if (!in_array($shortname, self::SERVICES, true)) {
-            throw new \moodle_exception('connectnoservice', 'local_coursefiles', '', $shortname);
+            throw new \moodle_exception('connectnoservice', 'local_visudesk', '', $shortname);
         }
         $service = $DB->get_record('external_services', ['shortname' => $shortname, 'enabled' => 1]);
         if (!$service) {
-            throw new \moodle_exception('connectnoservice', 'local_coursefiles', '', $shortname);
+            throw new \moodle_exception('connectnoservice', 'local_visudesk', '', $shortname);
         }
         return $service;
     }
@@ -84,7 +84,7 @@ class connect {
         try {
             $token = \core_external\util::generate_token_for_current_user($service);
         } catch (\moodle_exception $e) {
-            throw new \moodle_exception('connectnotallowed', 'local_coursefiles', '', $service->name, $e->getMessage());
+            throw new \moodle_exception('connectnotallowed', 'local_visudesk', '', $service->name, $e->getMessage());
         }
         \core_external\util::log_token_request($token);
         return $token->token;

@@ -17,7 +17,7 @@
 /**
  * Language strings.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -68,8 +68,8 @@ $string['nomarkingworkflow'] = 'This assignment has no marking workflow, so ther
 $string['notfilemodule'] = 'This activity is neither a file resource nor a folder.';
 $string['notparticipant'] = 'This person is not a participant of the assignment.';
 $string['onefileonly'] = 'A file resource takes exactly one file.';
-$string['pluginname'] = 'Course Files';
-$string['privacy:metadata'] = 'The Course Files plugin does not store any personal data.';
+$string['pluginname'] = 'VisuDesk';
+$string['privacy:metadata'] = 'The VisuDesk plugin does not store any personal data.';
 $string['scalenotfound'] = 'There is no scale named “{$a}” on this site or in this course.';
 $string['selfenrolcannotadd'] = 'Self enrolment cannot be added to this course.';
 $string['selfenroldisabled'] = 'Self enrolment is turned off on this site (Site administration → Plugins → Enrolments → Manage enrol plugins).';
@@ -80,4 +80,4 @@ $string['task_syncteacherrole'] = 'Give the site role to all teachers';
 $string['teacherrole'] = 'Teacher role in courses';
 $string['teacherrole_desc'] = 'Everybody with this role in at least one course gets the site role below.';
 $string['teacherroleheading'] = 'Site role for teachers';
-$string['teacherroleheading_desc'] = 'Capabilities such as creating a web service key are checked for the whole site, so a course role like Teacher cannot grant them. Course Files can give teachers a site role automatically.';
+$string['teacherroleheading_desc'] = 'Capabilities such as creating a web service key are checked for the whole site, so a course role like Teacher cannot grant them. VisuDesk can give teachers a site role automatically.';

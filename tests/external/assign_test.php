@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_coursefiles\external;
+namespace local_visudesk\external;
 
 /**
  * Tests for creating assignments and changing their due date.
  *
- * @package    local_coursefiles
+ * @package    local_visudesk
  * @category   test
  * @copyright  2026 Holger Sebastião
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,7 +30,7 @@ namespace local_coursefiles\external;
 #[\PHPUnit\Framework\Attributes\CoversClass(get_assign_grading::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(grade_submission::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(release_grades::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(\local_coursefiles\local\grading::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\local_visudesk\local\grading::class)]
 final class assign_test extends \advanced_testcase {
     /**
      * A teacher creates a hidden assignment with a worksheet and a due date, then moves the due date.
