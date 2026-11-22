@@ -1,5 +1,15 @@
 # Changes
 
+## 1.1.0 (2026-11-23)
+
+- Lesson planning in Moodle: new functions `local_visudesk_get_plan`, `local_visudesk_save_plan_entry` and
+  `local_visudesk_import_plan`, new table `local_visudesk_plan`. Each teacher only reads and writes their own planning.
+  Changes are saved field by field with the server time, so the Mac and the iPad can work on the same lesson; a field
+  changed meanwhile on the other device is reported as a conflict instead of overwritten.
+- Planning not changed for 730 days is removed every night (setting *Keep planning for (days)*); deleting an account
+  removes its planning too.
+- Privacy API: the plugin now declares, exports and deletes the planning (before: no personal data).
+
 ## 1.0.0 (2026-11-21)
 
 - New name: **local_visudesk** (shown as “VisuDesk”), formerly local_coursefiles (Course Files) 0.16.0. Another plugin

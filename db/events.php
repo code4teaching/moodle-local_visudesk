@@ -33,4 +33,8 @@ $observers = [
         'eventname' => '\core\event\course_deleted',
         'callback'  => '\local_visudesk\observer::course_deleted',
     ],
+    [
+        'eventname' => '\core\event\user_deleted',
+        'callback'  => '\local_visudesk\observer::user_deleted',
+    ],
 ];

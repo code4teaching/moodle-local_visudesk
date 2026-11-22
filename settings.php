@@ -58,6 +58,20 @@ if ($hassiteconfig) {
         $settings->add($siterole);
 
         $settings->add(new admin_setting_heading(
+            'local_visudesk/planheading',
+            get_string('planheading', 'local_visudesk'),
+            get_string('planheading_desc', 'local_visudesk')
+        ));
+        $settings->add(new admin_setting_configtext(
+            'local_visudesk/planretentiondays',
+            get_string('planretentiondays', 'local_visudesk'),
+            get_string('planretentiondays_desc', 'local_visudesk'),
+            \local_visudesk\local\planstore::RETENTIONDAYS,
+            PARAM_INT,
+            6
+        ));
+
+        $settings->add(new admin_setting_heading(
             'local_visudesk/autoapproveheading',
             get_string('autoapproveheading', 'local_visudesk'),
             get_string('autoapproveheading_desc', 'local_visudesk')

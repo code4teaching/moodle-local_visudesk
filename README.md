@@ -49,6 +49,9 @@ Moodle core cannot create file resources or folders through web services, and `c
 | `local_visudesk_check_autoapproved_course` | Marks such a course as checked. |
 | `local_visudesk_get_self_enrolment` | Reads the self enrolment of a course: on or off and the enrolment key. |
 | `local_visudesk_set_self_enrolment` | Turns self enrolment on or off and sets the enrolment key; adds the method (role: student) if missing. |
+| `local_visudesk_get_plan` | Returns the caller's **own** lesson planning for a date range (optionally only what changed since a time). |
+| `local_visudesk_save_plan_entry` | Saves changes to one lesson of the caller's own planning, field by field; a field changed meanwhile on another device is refused instead of overwritten. |
+| `local_visudesk_import_plan` | First upload of a planning the app kept locally; never overwrites what is already there. |
 
 Files are sent in the request as `{filename, content}` with the content base64 encoded. Each file must not be larger
 than the upload limit of the course. New resources and folders are hidden unless `visible=1`.
@@ -93,6 +96,19 @@ of the web service *VisuDesk* (short name `visudesk`) back to the app on the sam
 loopback address; the app accepts it only together with the random passport it sent. Moodle checks, as on the
 *Security keys* page, that the user may create tokens (`moodle/webservice:createtoken`, e.g. through the site role
 for teachers below) and, for a service with authorised users only, that the user is one of them.
+
+## Lesson planning
+
+Since 1.1.0 VisuDesk keeps each teacher's own lesson planning (topic, plan, how far the class got, links to course
+material) in Moodle, so that it is the same on the Mac and on the iPad. Each lesson is one record in
+`local_visudesk_plan`; every field carries the time of its last change, so changes from two devices to different
+fields are merged and only a change to the same field is refused.
+
+- Only the teacher reads and writes their planning. There is no capability to see other people's planning, not even
+  for administrators.
+- Planning not changed for two years is removed by the scheduled task *Remove old lesson planning* (setting *Keep
+  planning for (days)*, 0 = keep until the account is deleted). Deleting an account removes its planning.
+- The privacy API exports and deletes the planning (user context).
 
 ## License
 

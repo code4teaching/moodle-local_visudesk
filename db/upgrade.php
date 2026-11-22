@@ -29,6 +29,27 @@
  * @return bool
  */
 function xmldb_local_visudesk_upgrade($oldversion) {
+    global $DB;
+    $dbman = $DB->get_manager();
     // Version 1.0.0 is the first release under this name; local_coursefiles had the earlier steps.
+
+    if ($oldversion < 2026112300) {
+        // 1.1.0: lesson planning kept in Moodle, so that the Mac and the iPad share it.
+        $table = new xmldb_table('local_visudesk_plan');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('lessonkey', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('fields', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '15', null, XMLDB_NOTNULL, null, '0');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+        $table->add_index('userlesson', XMLDB_INDEX_UNIQUE, ['userid', 'lessonkey']);
+        $table->add_index('timemodified', XMLDB_INDEX_NOTUNIQUE, ['timemodified']);
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+        upgrade_plugin_savepoint(true, 2026112300, 'local', 'visudesk');
+    }
+
     return true;
 }

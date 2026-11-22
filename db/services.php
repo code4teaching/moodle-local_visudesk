@@ -25,6 +25,23 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
+    'local_visudesk_get_plan' => [
+        'classname'    => 'local_visudesk\external\get_plan',
+        'description'  => 'Returns the caller\'s own lesson planning (topic, plan, how far the class got) for a date range. ' .
+            'Each user only sees their own planning.',
+        'type'         => 'read',
+    ],
+    'local_visudesk_save_plan_entry' => [
+        'classname'    => 'local_visudesk\external\save_plan_entry',
+        'description'  => 'Saves changes to one lesson of the caller\'s own planning, field by field. A field changed meanwhile ' .
+            'on another device is refused instead of overwritten.',
+        'type'         => 'write',
+    ],
+    'local_visudesk_import_plan' => [
+        'classname'    => 'local_visudesk\external\import_plan',
+        'description'  => 'First upload of a planning an app kept locally. Fields the server already has stay as they are.',
+        'type'         => 'write',
+    ],
     'local_visudesk_create_resource' => [
         'classname'    => 'local_visudesk\external\create_resource',
         'description'  => 'Creates a file resource (e.g. a PDF worksheet) in a course section. The file is sent base64 encoded. ' .

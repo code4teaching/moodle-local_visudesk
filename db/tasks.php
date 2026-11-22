@@ -33,4 +33,12 @@ $tasks = [
         'month'     => '*',
         'dayofweek' => '*',
     ],
+    [
+        'classname' => '\local_visudesk\task\cleanup_plan',
+        'minute'    => '17',
+        'hour'      => '3',
+        'day'       => '*',
+        'month'     => '*',
+        'dayofweek' => '*',
+    ],
 ];

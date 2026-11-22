@@ -49,4 +49,13 @@ class observer {
         global $DB;
         $DB->delete_records('local_visudesk_autoappr', ['courseid' => $event->objectid]);
     }
+
+    /**
+     * Removes the planning of a deleted user (also when local_inactiveusers deletes old accounts).
+     *
+     * @param \core\event\user_deleted $event
+     */
+    public static function user_deleted(\core\event\user_deleted $event): void {
+        local\planstore::delete_user((int)$event->objectid);
+    }
 }
