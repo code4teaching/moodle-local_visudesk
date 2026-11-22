@@ -129,7 +129,7 @@ class planstore {
         if (!$record) {
             return [];
         }
-        $fields = json_decode($record->fields, true);
+        $fields = json_decode($record->plandata, true);
         return is_array($fields) ? $fields : [];
     }
 
@@ -253,9 +253,9 @@ class planstore {
             throw new \invalid_parameter_exception('Lesson too large');
         }
         if ($record) {
-            $DB->update_record(self::TABLE, (object)['id' => $record->id, 'fields' => $json, 'timemodified' => $timemodified]);
+            $DB->update_record(self::TABLE, (object)['id' => $record->id, 'plandata' => $json, 'timemodified' => $timemodified]);
         } else {
-            $DB->insert_record(self::TABLE, (object)['userid' => $userid, 'lessonkey' => $key, 'fields' => $json,
+            $DB->insert_record(self::TABLE, (object)['userid' => $userid, 'lessonkey' => $key, 'plandata' => $json,
                 'timemodified' => $timemodified]);
         }
     }

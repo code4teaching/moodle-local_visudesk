@@ -21,7 +21,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Owner, the only one who reads and writes it"/>
         <FIELD NAME="lessonkey" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="Date|start|classes|subject, as the app builds it"/>
-        <FIELD NAME="fields" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="JSON: field => {v: value, t: change in milliseconds}"/>
+        <FIELD NAME="plandata" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="JSON: field => {v: value, t: change in milliseconds}"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="15" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last change in milliseconds"/>
       </FIELDS>
       <KEYS>

@@ -45,7 +45,7 @@ class provider implements
         $collection->add_database_table(planstore::TABLE, [
             'userid' => 'privacy:metadata:plan:userid',
             'lessonkey' => 'privacy:metadata:plan:lessonkey',
-            'fields' => 'privacy:metadata:plan:fields',
+            'plandata' => 'privacy:metadata:plan:plandata',
             'timemodified' => 'privacy:metadata:plan:timemodified',
         ], 'privacy:metadata:plan');
         return $collection;
@@ -59,7 +59,7 @@ class provider implements
      */
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
-        $sql = 'SELECT ctx.id FROM {context} ctx
+        $sql = 'SELECT DISTINCT ctx.id FROM {context} ctx
                   JOIN {' . planstore::TABLE . '} p ON p.userid = ctx.instanceid
                  WHERE ctx.contextlevel = :level AND p.userid = :userid';
         $contextlist->add_from_sql($sql, ['level' => CONTEXT_USER, 'userid' => $userid]);
@@ -76,7 +76,7 @@ class provider implements
         if ($context instanceof \context_user) {
             $userlist->add_from_sql(
                 'userid',
-                'SELECT userid FROM {' . planstore::TABLE . '} WHERE userid = :userid',
+                'SELECT DISTINCT userid FROM {' . planstore::TABLE . '} WHERE userid = :userid',
                 ['userid' => $context->instanceid]
             );
         }
