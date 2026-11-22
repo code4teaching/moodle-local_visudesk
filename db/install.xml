@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/visudesk/db" VERSION="20261123" COMMENT="XMLDB file for Moodle local/visudesk"
+<XMLDB PATH="local/visudesk/db" VERSION="20261122" COMMENT="XMLDB file for Moodle local/visudesk"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >

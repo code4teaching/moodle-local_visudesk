@@ -1,6 +1,6 @@
 # Changes
 
-## 1.1.0 (2026-11-23)
+## 1.1.0 (2026-11-22)
 
 - Lesson planning in Moodle: new functions `local_visudesk_get_plan`, `local_visudesk_save_plan_entry` and
   `local_visudesk_import_plan`, new table `local_visudesk_plan`. Each teacher only reads and writes their own planning.
