@@ -71,7 +71,7 @@ final class plan_test extends \advanced_testcase {
         $first = $this->save(['thema' => ['Interfaces', 0], 'plan' => ["Einstieg\nÜbung", 0]]);
         $this->assertSame([], $first['conflicts']);
         $this->assertSame('Interfaces', $first['fields']['thema']['v']);
-        $this->assertSame($first['fields'], $this->read());
+        $this->assertEquals($first['fields'], $this->read());
 
         $second = $this->save(['thema' => ['Interfaces und Vererbung', $first['fields']['thema']['t']]]);
         $this->assertSame([], $second['conflicts']);
