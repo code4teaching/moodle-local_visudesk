@@ -1,5 +1,18 @@
 # Changes
 
+## 1.2.0 (unreleased)
+
+- VisuGrade sync: new functions `local_visudesk_vg_fetch`, `vg_push`, `vg_set_snapshot`, `vg_purge`, `vg_pair` and
+  `vg_delete_all`, new tables `local_visudesk_vgentry`, `local_visudesk_vgsnap` and `local_visudesk_vgpair`. VisuGrade
+  (the grade book app) encrypts every change on the teacher's device before sending it; Moodle only numbers and keeps
+  them and cannot read names or grades. A device may only send on top of the newest number, so no change is lost
+  between the Mac, the iPad and the iPhone.
+- Own web service **VisuGrade Sync** (`local_visudesk_visugrade`) with nothing but these functions; the connect page
+  hands out tokens for it, so VisuGrade's token can do nothing else in Moodle and stays separate from VisuDesk.
+- Nightly task: changes older than 30 days that a snapshot covers are deleted (the history VisuGrade shows), pairing
+  requests after ten minutes. Deleting an account or ending the sync removes everything.
+- Privacy API: declares, exports (as stored, encrypted) and deletes the sync data.
+
 ## 1.1.0 (2026-11-22)
 
 - Lesson planning in Moodle: new functions `local_visudesk_get_plan`, `local_visudesk_save_plan_entry` and

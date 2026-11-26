@@ -196,15 +196,57 @@ $functions = [
         'type'         => 'write',
         'capabilities' => 'moodle/site:approvecourse',
     ],
+    'local_visudesk_vg_fetch' => [
+        'classname'    => 'local_visudesk\external\vg_fetch',
+        'description'  => 'VisuGrade sync: returns the caller\'s own encrypted changes after a number, and the snapshot if the device has a gap. Moodle cannot read the content.',
+        'type'         => 'read',
+    ],
+    'local_visudesk_vg_push' => [
+        'classname'    => 'local_visudesk\external\vg_push',
+        'description'  => 'VisuGrade sync: appends the caller\'s encrypted changes, only on top of the newest number (otherwise: fetch first).',
+        'type'         => 'write',
+    ],
+    'local_visudesk_vg_set_snapshot' => [
+        'classname'    => 'local_visudesk\external\vg_set_snapshot',
+        'description'  => 'VisuGrade sync: stores the caller\'s encrypted snapshot of the whole grade book.',
+        'type'         => 'write',
+    ],
+    'local_visudesk_vg_purge' => [
+        'classname'    => 'local_visudesk\external\vg_purge',
+        'description'  => 'VisuGrade sync: deletes the caller\'s changes up to a number that the snapshot covers (deletion period).',
+        'type'         => 'write',
+    ],
+    'local_visudesk_vg_pair' => [
+        'classname'    => 'local_visudesk\external\vg_pair',
+        'description'  => 'VisuGrade sync: relays the pairing of a new device of the caller (public key in, encrypted key out).',
+        'type'         => 'write',
+    ],
+    'local_visudesk_vg_delete_all' => [
+        'classname'    => 'local_visudesk\external\vg_delete_all',
+        'description'  => 'VisuGrade sync: ends the caller\'s sync and deletes all their sync data in Moodle.',
+        'type'         => 'write',
+    ],
 ];
 
 $services = [
     'VisuDesk Plugin Service' => [
-        'functions'       => array_keys($functions),
+        'functions'       => array_values(array_filter(array_keys($functions),
+            fn($f) => strpos($f, 'local_visudesk_vg_') !== 0)),
         'shortname'       => 'local_visudesk',
         'restrictedusers' => 1,
         'enabled'         => 1,
         'uploadfiles'     => 1,
         'downloadfiles'   => 1,
+    ],
+    // VisuGrade (grade book app) has its own service with nothing but the sync functions, so its token can do
+    // nothing else in Moodle. Anyone may use it (restrictedusers 0); each call only touches the caller's own data.
+    'VisuGrade Sync' => [
+        'functions'       => array_values(array_filter(array_keys($functions),
+            fn($f) => strpos($f, 'local_visudesk_vg_') === 0)),
+        'shortname'       => 'local_visudesk_visugrade',
+        'restrictedusers' => 0,
+        'enabled'         => 1,
+        'uploadfiles'     => 0,
+        'downloadfiles'   => 0,
     ],
 ];

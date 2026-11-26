@@ -23,6 +23,7 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use local_visudesk\local\planstore;
+use local_visudesk\local\vgstore;
 
 /**
  * Privacy provider: the plugin keeps each teacher's own lesson planning (in the teacher's user context).
@@ -48,6 +49,17 @@ class provider implements
             'plandata' => 'privacy:metadata:plan:plandata',
             'timemodified' => 'privacy:metadata:plan:timemodified',
         ], 'privacy:metadata:plan');
+        $collection->add_database_table(vgstore::ENTRIES, [
+            'userid' => 'privacy:metadata:vg:userid',
+            'device' => 'privacy:metadata:vg:device',
+            'timecreated' => 'privacy:metadata:vg:timecreated',
+            'data' => 'privacy:metadata:vg:data',
+        ], 'privacy:metadata:vgentry');
+        $collection->add_database_table(vgstore::SNAPSHOTS, [
+            'userid' => 'privacy:metadata:vg:userid',
+            'timecreated' => 'privacy:metadata:vg:timecreated',
+            'data' => 'privacy:metadata:vg:data',
+        ], 'privacy:metadata:vgsnap');
         return $collection;
     }
 
@@ -63,6 +75,11 @@ class provider implements
                   JOIN {' . planstore::TABLE . '} p ON p.userid = ctx.instanceid
                  WHERE ctx.contextlevel = :level AND p.userid = :userid';
         $contextlist->add_from_sql($sql, ['level' => CONTEXT_USER, 'userid' => $userid]);
+        foreach ([vgstore::ENTRIES, vgstore::SNAPSHOTS] as $table) {
+            $contextlist->add_from_sql('SELECT DISTINCT ctx.id FROM {context} ctx
+                  JOIN {' . $table . '} v ON v.userid = ctx.instanceid
+                 WHERE ctx.contextlevel = :level AND v.userid = :userid', ['level' => CONTEXT_USER, 'userid' => $userid]);
+        }
         return $contextlist;
     }
 
@@ -79,6 +96,10 @@ class provider implements
                 'SELECT DISTINCT userid FROM {' . planstore::TABLE . '} WHERE userid = :userid',
                 ['userid' => $context->instanceid]
             );
+            foreach ([vgstore::ENTRIES, vgstore::SNAPSHOTS] as $table) {
+                $userlist->add_from_sql('userid', 'SELECT DISTINCT userid FROM {' . $table . '} WHERE userid = :userid',
+                    ['userid' => $context->instanceid]);
+            }
         }
     }
 
@@ -108,6 +129,21 @@ class provider implements
                     'timemodified' => \core_privacy\local\request\transform::datetime(intdiv((int)$record->timemodified, 1000)),
                 ];
             }
+            $entries = $DB->count_records(vgstore::ENTRIES, ['userid' => $userid]);
+            $snapshot = vgstore::snapshot($userid);
+            if ($entries || $snapshot) {
+                // The content is encrypted on the teacher's devices; Moodle can only hand it out as stored.
+                $records = [];
+                foreach ($DB->get_records(vgstore::ENTRIES, ['userid' => $userid], 'seq') as $r) {
+                    $records[] = ['seq' => (int)$r->seq, 'time' => \core_privacy\local\request\transform::datetime(
+                        intdiv((int)$r->timecreated, 1000)), 'encrypted' => $r->data];
+                }
+                writer::with_context($context)->export_data(
+                    [get_string('privacy:path:vg', 'local_visudesk')],
+                    (object)['note' => get_string('privacy:vg:encrypted', 'local_visudesk'), 'changes' => $records,
+                        'snapshot' => $snapshot ? $snapshot->data : null]
+                );
+            }
             if ($lessons) {
                 writer::with_context($context)->export_data(
                     [get_string('privacy:path:plan', 'local_visudesk')],
@@ -125,6 +161,7 @@ class provider implements
     public static function delete_data_for_all_users_in_context(\context $context): void {
         if ($context instanceof \context_user) {
             planstore::delete_user((int)$context->instanceid);
+            vgstore::delete_user((int)$context->instanceid);
         }
     }
 
@@ -138,6 +175,7 @@ class provider implements
         foreach ($contextlist->get_contexts() as $context) {
             if ($context instanceof \context_user && (int)$context->instanceid === $userid) {
                 planstore::delete_user($userid);
+                vgstore::delete_user($userid);
             }
         }
     }
@@ -151,6 +189,7 @@ class provider implements
         $context = $userlist->get_context();
         if ($context instanceof \context_user && in_array((int)$context->instanceid, $userlist->get_userids())) {
             planstore::delete_user((int)$context->instanceid);
+            vgstore::delete_user((int)$context->instanceid);
         }
     }
 }

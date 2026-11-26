@@ -28,7 +28,7 @@ namespace local_visudesk\local;
  */
 class connect {
     /** Services an app may connect to (short names). */
-    public const SERVICES = ['visudesk'];
+    public const SERVICES = ['visudesk', 'local_visudesk_visugrade'];
 
     /** Path the app listens on. */
     public const RETURNPATH = '/verbunden';
