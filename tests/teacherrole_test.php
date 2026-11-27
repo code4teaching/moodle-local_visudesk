@@ -116,6 +116,7 @@ final class teacherrole_test extends \advanced_testcase {
      * Losing the last teacher role takes the site role away again; another course keeps it.
      */
     public function test_revoked_when_no_longer_teaching(): void {
+        global $DB;
         $this->resetAfterTest();
         $siterole = $this->setup_roles();
         $gen = $this->getDataGenerator();
@@ -127,12 +128,11 @@ final class teacherrole_test extends \advanced_testcase {
         $this->assertTrue(user_has_role_assignment($teacher->id, $siterole, $system->id));
 
         $enrol = enrol_get_plugin('manual');
-        $instance1 = enrol_get_instances($course1->id, true);
-        $enrol->unenrol_user(reset($instance1), $teacher->id);
+        $manual = fn($course) => $DB->get_record('enrol', ['courseid' => $course->id, 'enrol' => 'manual'], '*', MUST_EXIST);
+        $enrol->unenrol_user($manual($course1), $teacher->id);
         $this->assertTrue(user_has_role_assignment($teacher->id, $siterole, $system->id));
 
-        $instance2 = enrol_get_instances($course2->id, true);
-        $enrol->unenrol_user(reset($instance2), $teacher->id);
+        $enrol->unenrol_user($manual($course2), $teacher->id);
         $this->assertFalse(user_has_role_assignment($teacher->id, $siterole, $system->id));
     }
 
