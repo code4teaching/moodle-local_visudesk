@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-
 /**
  * VisuGrade sync store: encrypted changes and snapshots per user. The server never sees content.
  *
@@ -38,27 +37,27 @@ namespace local_visudesk\local;
  */
 class vgstore {
     /** @var string Changes. */
-    const ENTRIES = 'local_visudesk_vgentry';
+    public const ENTRIES = 'local_visudesk_vgentry';
     /** @var string Snapshots, one per user. */
-    const SNAPSHOTS = 'local_visudesk_vgsnap';
+    public const SNAPSHOTS = 'local_visudesk_vgsnap';
     /** @var string Pairing requests of new devices. */
-    const PAIRS = 'local_visudesk_vgpair';
+    public const PAIRS = 'local_visudesk_vgpair';
     /** @var int Largest change in bytes (encrypted, base64). */
-    const MAXENTRY = 65536;
+    public const MAXENTRY = 65536;
     /** @var int Largest snapshot in bytes. */
-    const MAXSNAPSHOT = 20971520;
+    public const MAXSNAPSHOT = 20971520;
     /** @var int Most bytes per user (changes and snapshot). */
-    const MAXUSER = 52428800;
+    public const MAXUSER = 52428800;
     /** @var int Most changes in one push. */
-    const MAXPUSH = 200;
+    public const MAXPUSH = 200;
     /** @var int Days changes stay (the history the apps show). */
-    const KEEPDAYS = 30;
+    public const KEEPDAYS = 30;
     /** @var int Minutes a pairing request stays. */
-    const PAIRMINUTES = 10;
+    public const PAIRMINUTES = 10;
     /** @var string Device id: random hex. */
-    const DEVICE = '/^[0-9a-f]{8,32}$/';
+    public const DEVICE = '/^[0-9a-f]{8,32}$/';
     /** @var string Encrypted payload: base64. */
-    const BLOB = '/^[A-Za-z0-9+\/]+={0,2}$/';
+    public const BLOB = '/^[A-Za-z0-9+\/]+={0,2}$/';
 
     /**
      * Current server time in milliseconds.
