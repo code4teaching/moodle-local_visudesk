@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_visudesk';
-$plugin->version   = 2026112200;
+$plugin->version   = 2026112700;
 $plugin->requires  = 2025041400; // Moodle 5.0.
 $plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '1.1.0';
+$plugin->release   = '1.2.0';

@@ -1,6 +1,6 @@
 # Changes
 
-## 1.2.0 (unreleased)
+## 1.2.0 (2026-11-27)
 
 - VisuGrade sync: new functions `local_visudesk_vg_fetch`, `vg_push`, `vg_set_snapshot`, `vg_purge`, `vg_pair` and
   `vg_delete_all`, new tables `local_visudesk_vgentry`, `local_visudesk_vgsnap` and `local_visudesk_vgpair`. VisuGrade
