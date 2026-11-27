@@ -73,11 +73,7 @@ class set_feedback_files extends external_api {
         if (!$plugin || !$plugin->is_enabled() || !$plugin->is_visible()) {
             throw new \moodle_exception('feedbackfilesdisabled', 'local_visudesk');
         }
-        grading::require_supported($assign);
         grading::require_gradable($assign, $params['userid']);
-        if ($assign->grading_disabled($params['userid'])) {
-            throw new \moodle_exception('gradingdisabled', 'local_visudesk');
-        }
 
         $decoded = files::decode($params['files'], get_course($cm->course), $context);
         $grade = $assign->get_user_grade($params['userid'], true);

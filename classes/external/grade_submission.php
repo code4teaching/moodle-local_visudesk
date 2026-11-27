@@ -75,7 +75,7 @@ class grade_submission extends external_api {
         string $feedback = '',
         string $workflowstate = ''
     ): array {
-        global $CFG, $DB, $USER;
+        global $CFG, $USER;
         require_once($CFG->dirroot . '/mod/assign/locallib.php');
         require_once($CFG->dirroot . '/grade/grading/lib.php');
 
@@ -90,15 +90,12 @@ class grade_submission extends external_api {
 
         $assign = new \assign($context, $cm, get_course($cm->course));
         $instance = $assign->get_instance();
-        grading::require_supported($assign);
         grading::require_gradable($assign, $params['userid']);
-        // Rubrics and other advanced grading methods need their own form: grade those in Moodle.
-        if (get_grading_manager($context, 'mod_assign', 'submissions')->get_active_controller()) {
+        // With a rubric or another advanced grading method the grade comes from its form: set it in Moodle.
+        // Feedback and the marking workflow state can still be changed here, as on Moodle's grading page.
+        $advanced = get_grading_manager($context, 'mod_assign', 'submissions')->get_active_controller();
+        if ($params['changegrade'] && $advanced) {
             throw new \moodle_exception('advancedgrading', 'local_visudesk');
-        }
-        // Locked or overridden in the gradebook, or in a workflow state this user may not change (e.g. released).
-        if ($assign->grading_disabled($params['userid'])) {
-            throw new \moodle_exception('gradingdisabled', 'local_visudesk');
         }
         $state = $params['workflowstate'];
         if ($state !== '') {
@@ -115,15 +112,16 @@ class grade_submission extends external_api {
         $record = $assign->get_user_grade($params['userid'], true);
         if ($params['changegrade']) {
             $value = $params['grade'];
+            // The same grade type and scale items get_assign_grading reports.
+            $type = grading::describe($instance);
             if ($value < 0) {
                 $value = -1;
-            } else if ((int)$instance->grade > 0) {
-                if ($value > (float)$instance->grade) {
-                    throw new \moodle_exception('gradetoohigh', 'local_visudesk', '', format_float($instance->grade, -1));
+            } else if ($type['type'] === 'point') {
+                if ($value > $type['grademax']) {
+                    throw new \moodle_exception('gradetoohigh', 'local_visudesk', '', format_float($type['grademax'], -1));
                 }
-            } else if ((int)$instance->grade < 0) {
-                $items = (int)count(explode(',', (string)$DB->get_field('scale', 'scale', ['id' => -(int)$instance->grade])));
-                if ($value != round($value) || $value < 1 || $value > $items) {
+            } else if ($type['type'] === 'scale') {
+                if ($value != round($value) || $value < 1 || $value > $type['grademax']) {
                     throw new \moodle_exception('gradenotinscale', 'local_visudesk');
                 }
             } else {

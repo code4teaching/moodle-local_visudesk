@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['advancedgrading'] = 'This assignment uses an advanced grading method (for example a rubric). Grade it in Moodle.';
+$string['advancedgrading'] = 'This assignment uses an advanced grading method (for example a rubric). Set the grade in Moodle; feedback can still be given here.';
 $string['autoapprove'] = 'Approve course requests automatically';
 $string['autoapprove_desc'] = 'If a request follows the naming scheme below and the class already has a course, the course is created at once: hidden, in the category of the newest course of that class (archive categories left out), with the requester as teacher. Otherwise it stays a normal request. The default scheme is “school year class initials subject”, e.g. 2026 11FI2 SebH Objektorientierte Programmierung, short name 2026 11FI2 SebH OOP.';
 $string['autoapprovearchive'] = 'Archive categories';

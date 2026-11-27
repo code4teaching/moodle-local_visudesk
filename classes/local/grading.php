@@ -136,14 +136,21 @@ class grading {
     }
 
     /**
-     * Throws unless the current user may grade this participant (see gradable_userids()).
+     * Throws unless the current user may grade this participant here, by the rules of Moodle's grading page:
+     * no anonymous submissions (require_supported()), the participant among those the user may grade
+     * (gradable_userids()), and the grade not locked or overridden in the gradebook nor in a marking workflow state
+     * the user may not change.
      *
      * @param \assign $assign
      * @param int $userid
      */
     public static function require_gradable(\assign $assign, int $userid): void {
+        self::require_supported($assign);
         if (!isset(self::gradable_userids($assign)[$userid])) {
             throw new \moodle_exception('notparticipant', 'local_visudesk');
+        }
+        if ($assign->grading_disabled($userid)) {
+            throw new \moodle_exception('gradingdisabled', 'local_visudesk');
         }
     }
 }

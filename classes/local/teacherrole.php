@@ -108,24 +108,24 @@ class teacherrole {
     public static function sync(): int {
         global $DB;
         $roles = self::roles();
+        $teachers = [];
+        if ($roles) {
+            $sql = "SELECT DISTINCT ra.userid
+                      FROM {role_assignments} ra
+                      JOIN {context} ctx ON ctx.id = ra.contextid AND ctx.contextlevel = :course
+                     WHERE ra.roleid = :teacher";
+            $teachers = array_flip($DB->get_fieldset_sql($sql, ['course' => CONTEXT_COURSE, 'teacher' => $roles[0]]));
+        }
         $system = \context_system::instance();
         $own = $DB->get_records('role_assignments', ['contextid' => $system->id, 'component' => 'local_visudesk']);
         foreach ($own as $ra) {
-            $keep = $roles && (int)$ra->roleid === $roles[1] && self::teaches((int)$ra->userid, $roles[0]);
+            $keep = $roles && (int)$ra->roleid === $roles[1] && isset($teachers[$ra->userid]);
             if (!$keep) {
                 role_unassign((int)$ra->roleid, (int)$ra->userid, $system->id, 'local_visudesk');
             }
         }
-        if (!$roles) {
-            return 0;
-        }
-        $sql = "SELECT DISTINCT ra.userid
-                  FROM {role_assignments} ra
-                  JOIN {context} ctx ON ctx.id = ra.contextid AND ctx.contextlevel = :course
-                 WHERE ra.roleid = :teacher";
-        $userids = $DB->get_fieldset_sql($sql, ['course' => CONTEXT_COURSE, 'teacher' => $roles[0]]);
         $count = 0;
-        foreach ($userids as $userid) {
+        foreach (array_keys($teachers) as $userid) {
             if (self::grant((int)$userid)) {
                 $count++;
             }

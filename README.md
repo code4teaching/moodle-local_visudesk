@@ -34,7 +34,7 @@ Moodle core cannot create file resources or folders through web services, and `c
 | `local_visudesk_set_assign_duedate` | Changes the due date of an assignment. |
 | `local_visudesk_update_assign` | Changes an assignment: name, task description, attached files, due date, grade type and marking workflow (only what is passed). |
 | `local_visudesk_get_assign_grading` | Grading overview of an assignment: grade type and scale items, marking workflow, per participant grade, state, feedback (`mod/assign:grade`; only the participants the grading page shows the user: groups, marker allocation). |
-| `local_visudesk_grade_submission` | Grades one participant: grade, feedback comment, marking workflow state (`mod/assign:grade`; only states Moodle offers the user, releasing needs `mod/assign:releasegrades`; not for locked grades, anonymous submissions or advanced grading methods). |
+| `local_visudesk_grade_submission` | Grades one participant: grade, feedback comment, marking workflow state (`mod/assign:grade`; only states Moodle offers the user, releasing needs `mod/assign:releasegrades`; not for locked grades or anonymous submissions; with an advanced grading method only feedback and state). |
 | `local_visudesk_release_grades` | Releases grades of an assignment with marking workflow (`mod/assign:releasegrades`). |
 | `local_visudesk_set_feedback_files` | Gives one student feedback files in an assignment, e.g. the corrected submission (`mod/assign:grade`; the grade stays). |
 | `local_visudesk_create_section` | Creates a section at the end or at a given position. |

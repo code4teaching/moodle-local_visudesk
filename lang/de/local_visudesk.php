@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['advancedgrading'] = 'Diese Aufgabe nutzt eine erweiterte Bewertungsmethode (zum Beispiel ein Bewertungsraster). Bitte in Moodle bewerten.';
+$string['advancedgrading'] = 'Diese Aufgabe nutzt eine erweiterte Bewertungsmethode (zum Beispiel ein Bewertungsraster). Die Note bitte in Moodle setzen; Feedback geht weiter hier.';
 $string['autoapprove'] = 'Kursanträge automatisch annehmen';
 $string['autoapprove_desc'] = 'Folgt ein Antrag dem Namensschema unten und hat die Klasse schon einen Kurs, wird der Kurs sofort angelegt: verborgen, im Kursbereich des neuesten Kurses dieser Klasse (Archiv-Bereiche zählen nicht), mit der antragstellenden Person als Trainer/in. Sonst bleibt es ein normaler Antrag. Das voreingestellte Schema ist „Schuljahr Klasse Kürzel Fach“, z. B. 2026 11FI2 SebH Objektorientierte Programmierung, Kurzname 2026 11FI2 SebH OOP.';
 $string['autoapprovearchive'] = 'Archiv-Bereiche';
