@@ -295,8 +295,13 @@ class vgstore {
     public static function pair_open(int $userid): array {
         global $DB;
         $out = [];
-        foreach ($DB->get_records_select(self::PAIRS, "userid = ? AND timecreated >= ? AND answer = ''",
-                [$userid, self::now() - self::PAIRMINUTES * 60000], 'id') as $r) {
+        $open = $DB->get_records_select(
+            self::PAIRS,
+            "userid = ? AND timecreated >= ? AND answer = ''",
+            [$userid, self::now() - self::PAIRMINUTES * 60000],
+            'id'
+        );
+        foreach ($open as $r) {
             $out[] = ['id' => (int)$r->id, 'publickey' => $r->publickey, 'devicename' => $r->devicename,
                 'timecreated' => (int)$r->timecreated];
         }

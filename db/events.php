@@ -30,6 +30,10 @@ $observers = [
         'callback'  => '\local_visudesk\observer::role_assigned',
     ],
     [
+        'eventname' => '\core\event\role_unassigned',
+        'callback'  => '\local_visudesk\observer::role_unassigned',
+    ],
+    [
         'eventname' => '\core\event\course_deleted',
         'callback'  => '\local_visudesk\observer::course_deleted',
     ],

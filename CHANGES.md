@@ -1,5 +1,19 @@
 # Changes
 
+## 1.2.1 (2026-11-28)
+
+Changes from the plugin review.
+
+- Grading follows the same rules as Moodle's grading page: participants are limited to the groups the teacher may
+  access and, with marker allocation, to the participants allocated to them; marking workflow states are limited to
+  the ones Moodle offers the teacher (releasing needs *mod/assign:releasegrades*).
+- Assignments with anonymous submissions or an advanced grading method (for example a rubric) are refused with a
+  message to grade them in Moodle; grades locked or overridden in the gradebook are not changed.
+- Feedback comments are saved through the feedback comments plugin.
+- The site role for teachers is taken away again when someone no longer teaches any course, and by the daily task;
+  only assignments this plugin made are removed. With the feature switched off, the task removes them all.
+- Tests for these rules; code style.
+
 ## 1.2.0 (2026-11-27)
 
 - VisuGrade sync: new functions `local_visudesk_vg_fetch`, `vg_push`, `vg_set_snapshot`, `vg_purge`, `vg_pair` and

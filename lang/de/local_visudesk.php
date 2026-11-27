@@ -24,6 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['advancedgrading'] = 'Diese Aufgabe nutzt eine erweiterte Bewertungsmethode (zum Beispiel ein Bewertungsraster). Bitte in Moodle bewerten.';
 $string['autoapprove'] = 'Kursanträge automatisch annehmen';
 $string['autoapprove_desc'] = 'Folgt ein Antrag dem Namensschema unten und hat die Klasse schon einen Kurs, wird der Kurs sofort angelegt: verborgen, im Kursbereich des neuesten Kurses dieser Klasse (Archiv-Bereiche zählen nicht), mit der antragstellenden Person als Trainer/in. Sonst bleibt es ein normaler Antrag. Das voreingestellte Schema ist „Schuljahr Klasse Kürzel Fach“, z. B. 2026 11FI2 SebH Objektorientierte Programmierung, Kurzname 2026 11FI2 SebH OOP.';
 $string['autoapprovearchive'] = 'Archiv-Bereiche';
@@ -45,6 +46,7 @@ $string['autoapprovenotify_desc'] = 'Anmeldename der Person, die automatisch ang
 $string['autoapproveshortname'] = 'Schema für den Kurznamen';
 $string['autoapproveshortname_desc'] = 'Regulärer Ausdruck mit Begrenzern, mit denselben Gruppen (?&lt;class&gt;…) und gegebenenfalls (?&lt;key&gt;…) wie beim vollständigen Namen.';
 $string['availabilitydisabled'] = 'Voraussetzungen sind auf dieser Website ausgeschaltet (Website-Administration → Erweiterte Funktionen → Voraussetzungen aktivieren). Ein Freigabedatum hätte deshalb keine Wirkung.';
+$string['blindmarking'] = 'Diese Aufgabe nutzt anonyme Abgaben. Bitte in Moodle bewerten.';
 $string['connectbutton'] = 'Mit VisuDesk verbinden';
 $string['connectinvalid'] = 'Dieser Link zum Verbinden einer App ist ungültig. Bitte in der App noch einmal auf „Mit Moodle verbinden“ klicken.';
 $string['connectnoservice'] = 'Der Webservice {$a} steht zum Verbinden von Apps nicht zur Verfügung. Bitte wende dich an die Moodle-Administration.';
@@ -52,14 +54,16 @@ $string['connectnotallowed'] = 'Für den Webservice {$a} kannst du noch keinen S
 $string['connectquestion'] = '<p>VisuDesk auf diesem Computer möchte mit deinem Moodle-Konto <strong>{$a->name}</strong> arbeiten (Webservice „{$a->service}“).</p><p>VisuDesk kann dann in deinen Kursen das tun, was du in Moodle tun kannst: Dateien hochladen, Tests anlegen und Abgaben ansehen. Der Schlüssel geht nur an VisuDesk auf diesem Computer und wird dort im Schlüsselbund gespeichert.</p><p>Entfernen kannst du ihn jederzeit unter Einstellungen → Sicherheitsschlüssel.</p>';
 $string['connecttitle'] = 'VisuDesk verbinden';
 $string['errornamepattern'] = 'Bitte einen gültigen regulären Ausdruck mit Begrenzern und einer Gruppe „class“ eingeben, zum Beispiel /^(?<class>\\S+) .+$/u.';
+$string['feedbackcommentsdisabled'] = 'Feedback-Kommentare sind in dieser Aufgabe ausgeschaltet.';
 $string['feedbackfilesdisabled'] = 'In dieser Aufgabe sind Feedbackdateien ausgeschaltet. In den Einstellungen der Aufgabe unter Feedback-Typen „Feedbackdateien“ einschalten.';
 $string['gradenotinscale'] = 'Diese Note gehört nicht zur Skala der Aufgabe.';
 $string['gradetoohigh'] = 'Die Bewertung ist höher als das Maximum von {$a} Punkten.';
+$string['gradingdisabled'] = 'Diese Bewertung lässt sich hier nicht ändern: Sie ist in der Bewertungsübersicht gesperrt oder überschrieben, oder ihr Bewertungsstatus liegt außerhalb dessen, was du ändern darfst.';
 $string['gradingstarted'] = 'In dieser Aufgabe hat schon jemand eine Bewertung, deshalb lässt sich die Bewertungsart nicht mehr ändern.';
 $string['messageprovider:courseautoapproved'] = 'Kurs automatisch aus einem Antrag angelegt';
 $string['nogradetype'] = 'Diese Aufgabe wird nicht bewertet.';
 $string['nomarkingworkflow'] = 'Diese Aufgabe hat keinen Bewertungs-Workflow. Freigeben ist nicht nötig, Bewertungen sind sofort sichtbar.';
-$string['notparticipant'] = 'Diese Person nimmt nicht an der Aufgabe teil.';
+$string['notparticipant'] = 'Diese Person nimmt nicht an der Aufgabe teil, oder du darfst sie nicht bewerten (Gruppen oder Zuteilung der Bewertenden).';
 $string['planheading'] = 'Unterrichtsplanung';
 $string['planheading_desc'] = 'VisuDesk speichert hier die eigene Planung jeder Lehrkraft (Thema, Plan, wie weit die Klasse gekommen ist), damit sie auf dem Mac und dem iPad gleich ist. Nur die Lehrkraft selbst liest und ändert sie; auch Administrator:innen sehen sie in VisuDesk nicht.';
 $string['planretentiondays'] = 'Planung aufbewahren (Tage)';
@@ -84,3 +88,4 @@ $string['task_cleanupvg'] = 'Alte Änderungen des VisuGrade-Abgleichs löschen';
 $string['vgfull'] = 'Die Abgleich-Daten von VisuGrade für dieses Konto haben die Größengrenze erreicht.';
 $string['vgnosnapshot'] = 'Änderungen lassen sich erst löschen, wenn ein Stand sie enthält.';
 $string['vgpairgone'] = 'Diese Kopplungsanfrage ist abgelaufen. Bitte auf dem neuen Gerät neu beginnen.';
+$string['workflowstatenotallowed'] = 'Diesen Bewertungsstatus darfst du hier nicht setzen ({$a}).';

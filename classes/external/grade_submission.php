@@ -20,6 +20,7 @@ use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
+use local_visudesk\local\grading;
 
 /**
  * Grades one participant of an assignment: grade and feedback comment, and with marking workflow its state
@@ -31,9 +32,6 @@ use core_external\external_value;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grade_submission extends external_api {
-    /** @var string[] Marking workflow states that can be set. */
-    const STATES = ['notmarked', 'inmarking', 'readyforreview', 'inreview', 'readyforrelease', 'released'];
-
     /**
      * Parameters.
      *
@@ -79,6 +77,7 @@ class grade_submission extends external_api {
     ): array {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/mod/assign/locallib.php');
+        require_once($CFG->dirroot . '/grade/grading/lib.php');
 
         $params = self::validate_parameters(self::execute_parameters(), [
             'cmid' => $cmid, 'userid' => $userid, 'changegrade' => $changegrade, 'grade' => $grade,
@@ -91,13 +90,26 @@ class grade_submission extends external_api {
 
         $assign = new \assign($context, $cm, get_course($cm->course));
         $instance = $assign->get_instance();
-        if (!$assign->get_participant($params['userid'])) {
-            throw new \moodle_exception('notparticipant', 'local_visudesk');
+        grading::require_supported($assign);
+        grading::require_gradable($assign, $params['userid']);
+        // Rubrics and other advanced grading methods need their own form: grade those in Moodle.
+        if (get_grading_manager($context, 'mod_assign', 'submissions')->get_active_controller()) {
+            throw new \moodle_exception('advancedgrading', 'local_visudesk');
+        }
+        // Locked or overridden in the gradebook, or in a workflow state this user may not change (e.g. released).
+        if ($assign->grading_disabled($params['userid'])) {
+            throw new \moodle_exception('gradingdisabled', 'local_visudesk');
         }
         $state = $params['workflowstate'];
-        if ($state !== '' && (!$instance->markingworkflow || !in_array($state, self::STATES, true))) {
-            throw new \invalid_parameter_exception('workflowstate needs marking workflow and one of: ' .
-                implode(', ', self::STATES));
+        if ($state !== '') {
+            // Only the states Moodle offers this user; "released" needs mod/assign:releasegrades.
+            $allowed = $instance->markingworkflow ? array_keys($assign->get_marking_workflow_states_for_current_user()) : [];
+            if (!in_array($state, $allowed, true)) {
+                throw new \moodle_exception('workflowstatenotallowed', 'local_visudesk', '', s($state));
+            }
+            if ($state === ASSIGN_MARKING_WORKFLOW_STATE_RELEASED) {
+                require_capability('mod/assign:releasegrades', $context);
+            }
         }
 
         $record = $assign->get_user_grade($params['userid'], true);
@@ -121,16 +133,17 @@ class grade_submission extends external_api {
             $record->grader = $USER->id;
         }
         if ($params['changefeedback']) {
-            $comment = $DB->get_record('assignfeedback_comments', ['grade' => $record->id]);
-            if ($comment) {
-                $comment->commenttext = $params['feedback'];
-                $comment->commentformat = FORMAT_HTML;
-                $DB->update_record('assignfeedback_comments', $comment);
-            } else {
-                $DB->insert_record('assignfeedback_comments', (object)[
-                    'assignment' => $instance->id, 'grade' => $record->id,
-                    'commenttext' => $params['feedback'], 'commentformat' => FORMAT_HTML,
-                ]);
+            // Through the feedback comments plugin, like the grading form.
+            $comments = $assign->get_feedback_plugin_by_type('comments');
+            if (!$comments || !$comments->is_enabled() || !$comments->is_visible()) {
+                throw new \moodle_exception('feedbackcommentsdisabled', 'local_visudesk');
+            }
+            $comments->save($record, (object)[
+                'assignfeedbackcomments_editor' => ['text' => $params['feedback'], 'format' => FORMAT_HTML],
+            ]);
+            if (get_config('assign', 'feedback_plugin_for_gradebook') === 'assignfeedback_comments') {
+                $record->feedbacktext = $comments->text_for_gradebook($record);
+                $record->feedbackformat = $comments->format_for_gradebook($record);
             }
         }
         if ($state !== '') {

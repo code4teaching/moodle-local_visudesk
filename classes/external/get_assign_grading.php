@@ -60,16 +60,18 @@ class get_assign_grading extends external_api {
         require_capability('mod/assign:grade', $context);
 
         $assign = new \assign($context, $cm, get_course($cm->course));
+        grading::require_supported($assign);
         $instance = $assign->get_instance();
         $fileplugin = $assign->get_feedback_plugin_by_type('file');
         $users = [];
-        foreach ($assign->list_participants(0, true) as $participant) {
-            $grade = $assign->get_user_grade($participant->id, false);
-            $flags = $assign->get_user_flags($participant->id, false);
+        // Only the participants Moodle's grading page would show this user (groups, marker allocation).
+        foreach (grading::gradable_userids($assign) as $userid) {
+            $grade = $assign->get_user_grade($userid, false);
+            $flags = $assign->get_user_flags($userid, false);
             $comment = $grade ? $DB->get_record('assignfeedback_comments', ['grade' => $grade->id]) : null;
             $numfiles = $grade ? (int)$DB->get_field('assignfeedback_file', 'numfiles', ['grade' => $grade->id]) : 0;
             $users[] = [
-                'userid' => (int)$participant->id,
+                'userid' => $userid,
                 'grade' => $grade && $grade->grade !== null ? (float)$grade->grade : -1.0,
                 'workflowstate' => $flags && $flags->workflowstate ? $flags->workflowstate : '',
                 'feedback' => $comment ? (string)$comment->commenttext : '',

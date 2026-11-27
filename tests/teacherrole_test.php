@@ -111,4 +111,57 @@ final class teacherrole_test extends \advanced_testcase {
         $this->assertNull(local\teacherrole::roles());
         $this->assertSame(0, local\teacherrole::sync());
     }
+
+    /**
+     * Losing the last teacher role takes the site role away again; another course keeps it.
+     */
+    public function test_revoked_when_no_longer_teaching(): void {
+        $this->resetAfterTest();
+        $siterole = $this->setup_roles();
+        $gen = $this->getDataGenerator();
+        $course1 = $gen->create_course();
+        $course2 = $gen->create_course();
+        $teacher = $gen->create_and_enrol($course1, 'editingteacher');
+        $gen->enrol_user($teacher->id, $course2->id, 'editingteacher');
+        $system = \context_system::instance();
+        $this->assertTrue(user_has_role_assignment($teacher->id, $siterole, $system->id));
+
+        $enrol = enrol_get_plugin('manual');
+        $instance1 = enrol_get_instances($course1->id, true);
+        $enrol->unenrol_user(reset($instance1), $teacher->id);
+        $this->assertTrue(user_has_role_assignment($teacher->id, $siterole, $system->id));
+
+        $instance2 = enrol_get_instances($course2->id, true);
+        $enrol->unenrol_user(reset($instance2), $teacher->id);
+        $this->assertFalse(user_has_role_assignment($teacher->id, $siterole, $system->id));
+    }
+
+    /**
+     * The daily task removes the plugin's own assignments of people who no longer teach, but never a role an
+     * administrator gave by hand; with the feature off, all of the plugin's assignments go.
+     */
+    public function test_sync_removes_only_own(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $siterole = $this->setup_roles();
+        $gen = $this->getDataGenerator();
+        $course = $gen->create_course();
+        $former = $gen->create_user();
+        $manual = $gen->create_user();
+        $teacher = $gen->create_and_enrol($course, 'editingteacher');
+        $system = \context_system::instance();
+        role_assign($siterole, $former->id, $system->id, 'local_visudesk');
+        role_assign($siterole, $manual->id, $system->id);
+
+        local\teacherrole::sync();
+        $this->assertFalse(user_has_role_assignment($former->id, $siterole, $system->id));
+        $this->assertTrue(user_has_role_assignment($manual->id, $siterole, $system->id));
+        $this->assertTrue(user_has_role_assignment($teacher->id, $siterole, $system->id));
+
+        unset_config('siterole', 'local_visudesk');
+        local\teacherrole::sync();
+        $this->assertFalse(user_has_role_assignment($teacher->id, $siterole, $system->id));
+        $this->assertTrue(user_has_role_assignment($manual->id, $siterole, $system->id));
+        $this->assertSame(0, $DB->count_records('role_assignments', ['component' => 'local_visudesk']));
+    }
 }

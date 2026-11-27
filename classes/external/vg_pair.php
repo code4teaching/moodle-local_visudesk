@@ -41,7 +41,12 @@ class vg_pair extends external_api {
         return new external_function_parameters([
             'action' => new external_value(PARAM_ALPHA, 'request, open, answer or collect'),
             'id' => new external_value(PARAM_INT, 'Pairing id (answer, collect)', VALUE_DEFAULT, 0),
-            'publickey' => new external_value(PARAM_RAW, 'X25519 public key of the new device, base64 (request)', VALUE_DEFAULT, ''),
+            'publickey' => new external_value(
+                PARAM_RAW,
+                'X25519 public key of the new device, base64 (request)',
+                VALUE_DEFAULT,
+                ''
+            ),
             'devicename' => new external_value(PARAM_TEXT, 'Name of the new device (request)', VALUE_DEFAULT, ''),
             'answer' => new external_value(PARAM_RAW, 'Sync key encrypted for the new device, base64 (answer)', VALUE_DEFAULT, ''),
         ]);
@@ -57,7 +62,13 @@ class vg_pair extends external_api {
      * @param string $answer
      * @return array
      */
-    public static function execute(string $action, int $id = 0, string $publickey = '', string $devicename = '', string $answer = ''): array {
+    public static function execute(
+        string $action,
+        int $id = 0,
+        string $publickey = '',
+        string $devicename = '',
+        string $answer = ''
+    ): array {
         global $USER;
         $p = self::validate_parameters(self::execute_parameters(), ['action' => $action, 'id' => $id,
             'publickey' => $publickey, 'devicename' => $devicename, 'answer' => $answer]);

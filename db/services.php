@@ -198,12 +198,14 @@ $functions = [
     ],
     'local_visudesk_vg_fetch' => [
         'classname'    => 'local_visudesk\external\vg_fetch',
-        'description'  => 'VisuGrade sync: returns the caller\'s own encrypted changes after a number, and the snapshot if the device has a gap. Moodle cannot read the content.',
+        'description'  => 'VisuGrade sync: returns the caller\'s own encrypted changes after a number, and the snapshot '
+            . 'if the device has a gap. Moodle cannot read the content.',
         'type'         => 'read',
     ],
     'local_visudesk_vg_push' => [
         'classname'    => 'local_visudesk\external\vg_push',
-        'description'  => 'VisuGrade sync: appends the caller\'s encrypted changes, only on top of the newest number (otherwise: fetch first).',
+        'description'  => 'VisuGrade sync: appends the caller\'s encrypted changes, only on top of the newest number '
+            . '(otherwise: fetch first).',
         'type'         => 'write',
     ],
     'local_visudesk_vg_set_snapshot' => [
@@ -213,7 +215,8 @@ $functions = [
     ],
     'local_visudesk_vg_purge' => [
         'classname'    => 'local_visudesk\external\vg_purge',
-        'description'  => 'VisuGrade sync: deletes the caller\'s changes up to a number that the snapshot covers (deletion period).',
+        'description'  => 'VisuGrade sync: deletes the caller\'s changes up to a number that the snapshot covers '
+            . '(deletion period).',
         'type'         => 'write',
     ],
     'local_visudesk_vg_pair' => [

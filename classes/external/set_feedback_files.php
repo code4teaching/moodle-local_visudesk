@@ -20,6 +20,7 @@ use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
+use local_visudesk\local\grading;
 use local_visudesk\local\files;
 
 /**
@@ -72,8 +73,10 @@ class set_feedback_files extends external_api {
         if (!$plugin || !$plugin->is_enabled() || !$plugin->is_visible()) {
             throw new \moodle_exception('feedbackfilesdisabled', 'local_visudesk');
         }
-        if (!$assign->get_participant($params['userid'])) {
-            throw new \moodle_exception('notparticipant', 'local_visudesk');
+        grading::require_supported($assign);
+        grading::require_gradable($assign, $params['userid']);
+        if ($assign->grading_disabled($params['userid'])) {
+            throw new \moodle_exception('gradingdisabled', 'local_visudesk');
         }
 
         $decoded = files::decode($params['files'], get_course($cm->course), $context);

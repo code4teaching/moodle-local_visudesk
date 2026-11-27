@@ -41,6 +41,23 @@ class observer {
     }
 
     /**
+     * Someone lost a role: if it was the teacher role in a course and they teach no other course, take the site
+     * role away again (only if this plugin gave it).
+     *
+     * @param \core\event\role_unassigned $event
+     */
+    public static function role_unassigned(\core\event\role_unassigned $event): void {
+        $roles = local\teacherrole::roles();
+        if (!$roles || (int)$event->objectid !== $roles[0]) {
+            return;
+        }
+        if ((int)$event->get_context()->contextlevel !== CONTEXT_COURSE) {
+            return;
+        }
+        local\teacherrole::revoke((int)$event->relateduserid);
+    }
+
+    /**
      * Forgets an automatically created course when it is deleted.
      *
      * @param \core\event\course_deleted $event

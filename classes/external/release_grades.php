@@ -21,6 +21,7 @@ use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
+use local_visudesk\local\grading;
 
 /**
  * Releases grades of an assignment with marking workflow: the participants (all graded ones if none are given) get
@@ -67,6 +68,7 @@ class release_grades extends external_api {
         require_capability('mod/assign:releasegrades', $context);
 
         $assign = new \assign($context, $cm, get_course($cm->course));
+        grading::require_supported($assign);
         $instance = $assign->get_instance();
         if (!$instance->markingworkflow) {
             throw new \moodle_exception('nomarkingworkflow', 'local_visudesk');
@@ -75,9 +77,11 @@ class release_grades extends external_api {
         if (!$ids) {
             $ids = $DB->get_fieldset_select('assign_grades', 'DISTINCT userid', 'assignment = ? AND grade >= 0', [$instance->id]);
         }
+        // Only participants this user may grade (groups, marker allocation), like Moodle's grading page.
+        $gradable = grading::gradable_userids($assign);
         $released = [];
         foreach (array_unique($ids) as $userid) {
-            if (!$assign->get_participant($userid)) {
+            if (!isset($gradable[$userid]) || $assign->grading_disabled($userid, false)) {
                 continue;
             }
             $flags = $assign->get_user_flags($userid, true);

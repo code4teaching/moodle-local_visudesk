@@ -66,13 +66,56 @@ class teacherrole {
     }
 
     /**
-     * Gives the site role to everybody who has the teacher role in any course.
+     * Whether the user has the teacher role in at least one course.
+     *
+     * @param int $userid
+     * @param int $teacherrole
+     * @return bool
+     */
+    public static function teaches(int $userid, int $teacherrole): bool {
+        global $DB;
+        return $DB->record_exists_sql(
+            "SELECT 1
+               FROM {role_assignments} ra
+               JOIN {context} ctx ON ctx.id = ra.contextid AND ctx.contextlevel = :course
+              WHERE ra.userid = :userid AND ra.roleid = :teacher",
+            ['course' => CONTEXT_COURSE, 'userid' => $userid, 'teacher' => $teacherrole]
+        );
+    }
+
+    /**
+     * Takes the site role away again once the user no longer teaches any course. Only assignments this plugin made
+     * (component local_visudesk) are removed; a role an administrator gave by hand stays.
+     *
+     * @param int $userid
+     * @return bool true if a role was removed now
+     */
+    public static function revoke(int $userid): bool {
+        $roles = self::roles();
+        if (!$roles || self::teaches($userid, $roles[0])) {
+            return false;
+        }
+        return self::unassign_own($userid, $roles[1]);
+    }
+
+    /**
+     * Gives the site role to everybody who has the teacher role in any course, and takes the site roles this plugin
+     * gave away from everybody who no longer does. With the feature switched off (or another site role chosen),
+     * the plugin's own assignments of other roles are removed too.
      *
      * @return int number of users who got the role now
      */
     public static function sync(): int {
         global $DB;
         $roles = self::roles();
+        $system = \context_system::instance();
+        $own = $DB->get_records('role_assignments', ['contextid' => $system->id, 'component' => 'local_visudesk']);
+        foreach ($own as $ra) {
+            $keep = $roles && (int)$ra->roleid === $roles[1] && self::teaches((int)$ra->userid, $roles[0]);
+            if (!$keep) {
+                role_unassign((int)$ra->roleid, (int)$ra->userid, $system->id, 'local_visudesk');
+            }
+        }
         if (!$roles) {
             return 0;
         }
@@ -88,5 +131,24 @@ class teacherrole {
             }
         }
         return $count;
+    }
+
+    /**
+     * Removes this plugin's assignment of a role in the system context.
+     *
+     * @param int $userid
+     * @param int $roleid
+     * @return bool true if there was one
+     */
+    private static function unassign_own(int $userid, int $roleid): bool {
+        global $DB;
+        $system = \context_system::instance();
+        $exists = $DB->record_exists('role_assignments', [
+            'contextid' => $system->id, 'userid' => $userid, 'roleid' => $roleid, 'component' => 'local_visudesk',
+        ]);
+        if ($exists) {
+            role_unassign($roleid, $userid, $system->id, 'local_visudesk');
+        }
+        return $exists;
     }
 }

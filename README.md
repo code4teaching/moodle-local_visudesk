@@ -33,8 +33,8 @@ Moodle core cannot create file resources or folders through web services, and `c
 | `local_visudesk_create_assign` | Creates an assignment with file submissions, due date and attached task files; feedback files on; points, a scale or no grade; optional marking workflow. |
 | `local_visudesk_set_assign_duedate` | Changes the due date of an assignment. |
 | `local_visudesk_update_assign` | Changes an assignment: name, task description, attached files, due date, grade type and marking workflow (only what is passed). |
-| `local_visudesk_get_assign_grading` | Grading overview of an assignment: grade type and scale items, marking workflow, per participant grade, state, feedback (`mod/assign:grade`). |
-| `local_visudesk_grade_submission` | Grades one participant: grade, feedback comment, marking workflow state (`mod/assign:grade`). |
+| `local_visudesk_get_assign_grading` | Grading overview of an assignment: grade type and scale items, marking workflow, per participant grade, state, feedback (`mod/assign:grade`; only the participants the grading page shows the user: groups, marker allocation). |
+| `local_visudesk_grade_submission` | Grades one participant: grade, feedback comment, marking workflow state (`mod/assign:grade`; only states Moodle offers the user, releasing needs `mod/assign:releasegrades`; not for locked grades, anonymous submissions or advanced grading methods). |
 | `local_visudesk_release_grades` | Releases grades of an assignment with marking workflow (`mod/assign:releasegrades`). |
 | `local_visudesk_set_feedback_files` | Gives one student feedback files in an assignment, e.g. the corrected submission (`mod/assign:grade`; the grade stays). |
 | `local_visudesk_create_section` | Creates a section at the end or at a given position. |
@@ -120,4 +120,5 @@ Web service capabilities such as `moodle/webservice:createtoken` are checked in 
 role Teacher cannot grant them. Under *Site administration → Plugins → Local plugins → VisuDesk* you can choose a
 system role (e.g. "Web service user") that everybody with the teacher role in at least one course gets
 automatically. Saving the setting gives it to all current teachers; afterwards an event observer and a daily task
-keep it in step. The role is not removed when someone stops teaching.
+keep it in step. When someone no longer has the teacher role in any course, the role is taken away again; only
+assignments the plugin made are removed, a role given by hand stays.

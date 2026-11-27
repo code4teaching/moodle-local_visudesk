@@ -24,6 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['advancedgrading'] = 'This assignment uses an advanced grading method (for example a rubric). Grade it in Moodle.';
 $string['autoapprove'] = 'Approve course requests automatically';
 $string['autoapprove_desc'] = 'If a request follows the naming scheme below and the class already has a course, the course is created at once: hidden, in the category of the newest course of that class (archive categories left out), with the requester as teacher. Otherwise it stays a normal request. The default scheme is “school year class initials subject”, e.g. 2026 11FI2 SebH Objektorientierte Programmierung, short name 2026 11FI2 SebH OOP.';
 $string['autoapprovearchive'] = 'Archive categories';
@@ -47,6 +48,7 @@ $string['autoapproveshortname_desc'] = 'Regular expression with delimiters, with
 $string['availabilitydisabled'] = 'Restrict access is turned off on this site (Site administration → Advanced features → Enable restricted access), so a release date would have no effect.';
 $string['backupfailed'] = 'The backup could not be created.';
 $string['backupwithusers'] = 'The site settings force user data into course backups. No backup without user data is possible.';
+$string['blindmarking'] = 'This assignment uses anonymous submissions. Grade it in Moodle.';
 $string['connectbutton'] = 'Connect to VisuDesk';
 $string['connectinvalid'] = 'This link to connect an app is not valid. Start again in the app with “Connect to Moodle”.';
 $string['connectnoservice'] = 'The web service {$a} is not available for connecting apps. Please contact the Moodle administration.';
@@ -54,10 +56,12 @@ $string['connectnotallowed'] = 'You cannot get a key for the web service {$a} ye
 $string['connectquestion'] = '<p>VisuDesk on this computer wants to work with your Moodle account <strong>{$a->name}</strong> (web service “{$a->service}”).</p><p>VisuDesk can then do in your courses what you can do in Moodle: upload files, create quizzes and look at submissions. The key goes only to VisuDesk on this computer and is stored in its keychain.</p><p>You can remove the key at any time under Preferences → Security keys.</p>';
 $string['connecttitle'] = 'Connect VisuDesk';
 $string['errornamepattern'] = 'This needs to be a valid regular expression with delimiters and a group named “class”, for example /^(?<class>\\S+) .+$/u.';
+$string['feedbackcommentsdisabled'] = 'Feedback comments are switched off for this assignment.';
 $string['feedbackfilesdisabled'] = 'Feedback files are turned off in this assignment. Turn on “Feedback files” under Feedback types in the assignment settings.';
 $string['filetoobig'] = 'The file {$a->filename} ({$a->size}) is larger than the upload limit of this course ({$a->max}).';
 $string['gradenotinscale'] = 'This grade is not an item of the scale of the assignment.';
 $string['gradetoohigh'] = 'The grade is higher than the maximum of {$a} points.';
+$string['gradingdisabled'] = 'This grade cannot be changed here: it is locked or overridden in the gradebook, or its marking workflow state is beyond what you may change.';
 $string['gradingstarted'] = 'Somebody already has a grade in this assignment, so its grade type cannot change any more.';
 $string['invalidcontent'] = 'The content of {$a} is not valid base64.';
 $string['invalidfilename'] = 'Invalid or duplicate file name: {$a}';
@@ -66,7 +70,7 @@ $string['nofiles'] = 'No files given.';
 $string['nogradetype'] = 'This assignment is not graded.';
 $string['nomarkingworkflow'] = 'This assignment has no marking workflow, so there is nothing to release: grades are visible at once.';
 $string['notfilemodule'] = 'This activity is neither a file resource nor a folder.';
-$string['notparticipant'] = 'This person is not a participant of the assignment.';
+$string['notparticipant'] = 'This person is not a participant of the assignment, or you may not grade them (groups or marker allocation).';
 $string['onefileonly'] = 'A file resource takes exactly one file.';
 $string['planheading'] = 'Lesson planning';
 $string['planheading_desc'] = 'VisuDesk keeps each teacher\'s own planning (topic, plan, how far the class got) here, so that it is the same on the Mac and on the iPad. Only the teacher reads and writes it; administrators do not see it in VisuDesk either.';
@@ -103,3 +107,4 @@ $string['teacherroleheading_desc'] = 'Capabilities such as creating a web servic
 $string['vgfull'] = 'The VisuGrade sync data of this account has reached its size limit.';
 $string['vgnosnapshot'] = 'Changes can only be deleted after a snapshot covers them.';
 $string['vgpairgone'] = 'This pairing request has expired. Start again on the new device.';
+$string['workflowstatenotallowed'] = 'This marking workflow state is not available to you here ({$a}).';

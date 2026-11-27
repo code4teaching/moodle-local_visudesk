@@ -87,4 +87,63 @@ class grading {
         global $DB;
         return $DB->record_exists_select('assign_grades', 'assignment = ? AND grade >= 0', [$assignid]);
     }
+
+    /**
+     * Refuses what VisuDesk cannot show or grade the way Moodle's grading page does: anonymous (blind) marking
+     * while identities are hidden.
+     *
+     * @param \assign $assign
+     */
+    public static function require_supported(\assign $assign): void {
+        if ($assign->is_blind_marking()) {
+            throw new \moodle_exception('blindmarking', 'local_visudesk');
+        }
+    }
+
+    /**
+     * The participants the current user may see and grade, like Moodle's grading page: in separate groups mode only
+     * the groups they can access (all with moodle/site:accessallgroups), and with marker allocation only the
+     * participants allocated to them (all with mod/assign:manageallocations).
+     *
+     * @param \assign $assign
+     * @return int[] user ids, keyed by id
+     */
+    public static function gradable_userids(\assign $assign): array {
+        global $USER;
+        $cm = $assign->get_course_module();
+        $context = $assign->get_context();
+        $groupids = [0];
+        if (groups_get_activity_groupmode($cm) == SEPARATEGROUPS && !has_capability('moodle/site:accessallgroups', $context)) {
+            $groupids = array_keys(groups_get_all_groups($cm->course, $USER->id, $cm->groupingid, 'g.id'));
+        }
+        $ids = [];
+        foreach ($groupids as $groupid) {
+            foreach (array_keys($assign->list_participants($groupid, true)) as $id) {
+                $ids[(int)$id] = (int)$id;
+            }
+        }
+        $instance = $assign->get_instance();
+        $allocated = $instance->markingworkflow && $instance->markingallocation;
+        if ($allocated && !has_capability('mod/assign:manageallocations', $context)) {
+            foreach ($ids as $id) {
+                $flags = $assign->get_user_flags($id, false);
+                if (!$flags || (int)$flags->allocatedmarker !== (int)$USER->id) {
+                    unset($ids[$id]);
+                }
+            }
+        }
+        return $ids;
+    }
+
+    /**
+     * Throws unless the current user may grade this participant (see gradable_userids()).
+     *
+     * @param \assign $assign
+     * @param int $userid
+     */
+    public static function require_gradable(\assign $assign, int $userid): void {
+        if (!isset(self::gradable_userids($assign)[$userid])) {
+            throw new \moodle_exception('notparticipant', 'local_visudesk');
+        }
+    }
 }

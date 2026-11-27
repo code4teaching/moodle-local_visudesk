@@ -37,11 +37,12 @@ class sync_teacherrole extends \core\task\scheduled_task {
      * Runs the task.
      */
     public function execute(): void {
-        if (!\local_visudesk\local\teacherrole::roles()) {
-            mtrace('Site role for teachers is not set up – nothing to do.');
-            return;
-        }
+        // Also runs when the feature is off: then it removes the site roles this plugin gave earlier.
         $count = \local_visudesk\local\teacherrole::sync();
-        mtrace("Site role given to {$count} teacher(s).");
+        if (\local_visudesk\local\teacherrole::roles()) {
+            mtrace("Site role given to {$count} teacher(s); removed where no longer teaching.");
+        } else {
+            mtrace('Site role for teachers is not set up; site roles given earlier by this plugin removed.');
+        }
     }
 }
