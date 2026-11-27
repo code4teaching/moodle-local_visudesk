@@ -141,8 +141,8 @@ final class vg_test extends \advanced_testcase {
         vg_set_snapshot::execute(1, self::blob('stand'));
         $r = vgstore::cleanup();
         $this->assertSame(1, $r['deleted']);
-        $this->assertSame([2, 3], array_map('intval', $DB->get_fieldset_select(vgstore::ENTRIES, 'seq', 'userid = ?',
-            [$user->id])));
+        $seqs = $DB->get_fieldset_sql('SELECT seq FROM {' . vgstore::ENTRIES . '} WHERE userid = ? ORDER BY seq', [$user->id]);
+        $this->assertSame([2, 3], array_map('intval', $seqs));
     }
 
     /**

@@ -97,8 +97,11 @@ class provider implements
                 ['userid' => $context->instanceid]
             );
             foreach ([vgstore::ENTRIES, vgstore::SNAPSHOTS] as $table) {
-                $userlist->add_from_sql('userid', 'SELECT DISTINCT userid FROM {' . $table . '} WHERE userid = :userid',
-                    ['userid' => $context->instanceid]);
+                $userlist->add_from_sql(
+                    'userid',
+                    'SELECT DISTINCT userid FROM {' . $table . '} WHERE userid = :userid',
+                    ['userid' => $context->instanceid]
+                );
             }
         }
     }
@@ -135,8 +138,8 @@ class provider implements
                 // The content is encrypted on the teacher's devices; Moodle can only hand it out as stored.
                 $records = [];
                 foreach ($DB->get_records(vgstore::ENTRIES, ['userid' => $userid], 'seq') as $r) {
-                    $records[] = ['seq' => (int)$r->seq, 'time' => \core_privacy\local\request\transform::datetime(
-                        intdiv((int)$r->timecreated, 1000)), 'encrypted' => $r->data];
+                    $time = \core_privacy\local\request\transform::datetime(intdiv((int)$r->timecreated, 1000));
+                    $records[] = ['seq' => (int)$r->seq, 'time' => $time, 'encrypted' => $r->data];
                 }
                 writer::with_context($context)->export_data(
                     [get_string('privacy:path:vg', 'local_visudesk')],

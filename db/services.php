@@ -231,10 +231,12 @@ $functions = [
     ],
 ];
 
+// The VisuGrade sync functions go into their own service, all others into the VisuDesk service.
+$vgfunctions = array_values(array_filter(array_keys($functions), fn($f) => str_starts_with($f, 'local_visudesk_vg_')));
+
 $services = [
     'VisuDesk Plugin Service' => [
-        'functions'       => array_values(array_filter(array_keys($functions),
-            fn($f) => strpos($f, 'local_visudesk_vg_') !== 0)),
+        'functions'       => array_values(array_diff(array_keys($functions), $vgfunctions)),
         'shortname'       => 'local_visudesk',
         'restrictedusers' => 1,
         'enabled'         => 1,
@@ -244,8 +246,7 @@ $services = [
     // VisuGrade (grade book app) has its own service with nothing but the sync functions, so its token can do
     // nothing else in Moodle. Anyone may use it (restrictedusers 0); each call only touches the caller's own data.
     'VisuGrade Sync' => [
-        'functions'       => array_values(array_filter(array_keys($functions),
-            fn($f) => strpos($f, 'local_visudesk_vg_') === 0)),
+        'functions'       => $vgfunctions,
         'shortname'       => 'local_visudesk_visugrade',
         'restrictedusers' => 0,
         'enabled'         => 1,

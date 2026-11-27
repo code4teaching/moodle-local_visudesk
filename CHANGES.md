@@ -1,5 +1,10 @@
 # Changes
 
+## 1.2.2 (2026-11-28)
+
+- Code style of the VisuGrade sync code (multi-line function calls); a test no longer depends on the database's row
+  order. No change in behaviour.
+
 ## 1.2.1 (2026-11-28)
 
 Changes from the plugin review.
